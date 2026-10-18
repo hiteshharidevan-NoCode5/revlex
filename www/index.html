@@ -329,122 +329,8 @@
   </main>
 
   <script>
-    const LEXICON = [
-      {
-        word: "petrichor",
-        pos: "noun",
-        def: "A pleasant, distinctive smell that frequently accompanies the first rain after a long period of warm, dry weather.",
-        synonyms: ["earthy scent", "rain fragrance"]
-      },
-      {
-        word: "acrophobia",
-        pos: "noun",
-        def: "An extreme or irrational fear of heights.",
-        synonyms: ["vertigo fear", "height anxiety"]
-      },
-      {
-        word: "apophasis",
-        pos: "noun",
-        def: "Mentioning something by declaring that it will not be mentioned.",
-        synonyms: ["paralipsis", "rhetorical omission"]
-      },
-      {
-        word: "defenestration",
-        pos: "noun",
-        def: "The action of throwing someone or something out of a window.",
-        synonyms: ["ejection"]
-      },
-      {
-        word: "hesitate",
-        pos: "verb",
-        def: "Pause before saying or doing something, especially through uncertainty or reluctance.",
-        synonyms: ["falter", "dither", "waver"]
-      },
-      {
-        word: "loquacious",
-        pos: "adj",
-        def: "Tending to talk a great deal; extremely talkative or verbose.",
-        synonyms: ["garrulous", "voluble", "chatty"]
-      },
-      {
-        word: "ephemeral",
-        pos: "adj",
-        def: "Lasting for a very short time; transitory or fleeting.",
-        synonyms: ["fleeting", "transient", "momentary"]
-      },
-      {
-        word: "serendipity",
-        pos: "noun",
-        def: "The occurrence and development of events by chance in a happy or beneficial way.",
-        synonyms: ["happy accident", "good fortune"]
-      },
-      {
-        word: "quixotic",
-        pos: "adj",
-        def: "Exceedingly idealistic; unrealistic and impractical in the pursuit of noble goals.",
-        synonyms: ["idealistic", "visionary", "romantic"]
-      },
-      {
-        word: "anachronism",
-        pos: "noun",
-        def: "A thing belonging or appropriate to a period other than that in which it exists, especially a thing that is conspicuously old-fashioned.",
-        synonyms: ["misplacement", "archaism"]
-      },
-      {
-        word: "reticent",
-        pos: "adj",
-        def: "Not revealing one's thoughts or feelings readily; reserved, uncommunicative, or restrained.",
-        synonyms: ["reserved", "withdrawn", "introverted"]
-      },
-      {
-        word: "intransigent",
-        pos: "adj",
-        def: "Unwilling or refusing to change one's views or to agree about something; stubborn.",
-        synonyms: ["stubborn", "uncompromising", "obstinate"]
-      }
-    ];
-
+    let db = null;
     const STOPWORDS = new Set(["a", "an", "the", "in", "on", "of", "to", "for", "with", "that", "it", "or", "and", "by", "is", "are"]);
-
-    function tokenize(text) {
-      return text
-        .toLowerCase()
-        .replace(/[^a-z0-9\s]/g, " ")
-        .split(/\s+/)
-        .filter(t => t.length > 1 && !STOPWORDS.has(t));
-    }
-
-    function searchReverse(query, selectedPos, letterFilter) {
-      const queryTokens = tokenize(query);
-      if (queryTokens.length === 0) return [];
-
-      const prefix = letterFilter.trim().toLowerCase();
-      const scored = [];
-
-      for (const entry of LEXICON) {
-        if (selectedPos !== "all" && entry.pos !== selectedPos) continue;
-        if (prefix && !entry.word.toLowerCase().startsWith(prefix)) continue;
-
-        let score = 0;
-        const defTokens = tokenize(entry.def);
-        const synTokens = entry.synonyms.flatMap(s => tokenize(s));
-        const headwordTokens = tokenize(entry.word);
-
-        for (const q of queryTokens) {
-          if (defTokens.includes(q)) score += 5;
-          else if (defTokens.some(d => d.startsWith(q.slice(0, 4)) || q.startsWith(d.slice(0, 4)))) score += 2;
-
-          if (synTokens.includes(q)) score += 7;
-          if (headwordTokens.includes(q)) score += 10;
-        }
-
-        if (score > 0) {
-          scored.push({ entry, score });
-        }
-      }
-
-      return scored.sort((a, b) => b.score - a.score).map(s => s.entry);
-    }
 
     const queryInput = document.getElementById("queryInput");
     const letterInput = document.getElementById("letterInput");
@@ -455,143 +341,150 @@
 
     let activePos = "all";
 
-    function render() {
-      const q = queryInput.value;
-      const letter = letterInput.value;
+    async function initDatabase() {
+      try {
+        const { CapacitorSQLite, SQLiteConnection } = window.CapacitorCommunitySqlite || {};
+        if (!window.Capacitor || !window.Capacitor.isNativePlatform()) {
+          console.log("Running in web browser mode. SQLite native requires Android/iOS container.");
+          return;
+        }
 
-      if (!q.trim() && !letter.trim()) {
-        resultsContainer.innerHTML = `<div class="empty-state">Enter a definition, concept, or phrase to find candidate words.</div>`;
-        resultsCount.textContent = "Top Matches";
-        return;
+        const sqlite = new SQLiteConnection(CapacitorSQLite);
+        await sqlite.copyFromAssets();
+        db = await sqlite.createConnection("revlex", false, "no-encryption", 1, false);
+        await db.open();
+        console.log("RevLex SQLite database connected successfully!");
+      } catch (err) {
+        console.error("Database initialization error:", err);
       }
-
-      const results = searchReverse(q, activePos, letter);
-
-      if (results.length === 0) {
-        resultsContainer.innerHTML = `<div class="empty-state">No matching words found. Try broader terms or clear the letter filter.</div>`;
-        resultsCount.textContent = "0 Matches Found";
-        return;
-      }
-
-      resultsCount.textContent = `${results.length} Match${results.length > 1 ? "es" : ""}`;
-      resultsContainer.innerHTML = results.map(item => `
-        <article class="word-card">
-          <div class="word-header">
-            <span class="headword">${item.word}</span>
-            <span class="pos-badge">${item.pos}</span>
-          </div>
-          <p class="definition">${item.def}</p>
-          <div class="meta-tokens">
-            ${item.synonyms.map(syn => `<span class="synonym-chip">${syn}</span>`).join("")}
-          </div>
-        </article>
-      `).join("");
     }
 
-    queryInput.addEventListener("input", render);
-    letterInput.addEventListener("input", render);
+    function tokenize(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s]/g, " ")
+        .split(/\s+/)
+        .filter(t => t.length > 1 && !STOPWORDS.has(t));
+    }
 
-    posFilter.addEventListener("click", (e) => {
-      if (!e.target.classList.contains("pos-btn")) return;
-      document.querySelectorAll(".pos-btn").forEach(b => b.classList.remove("active"));
-      e.target.classList.add("active");
-      activePos = e.target.dataset.pos;
-      render();
-    });
+    async function render() {
+      const q = queryInput ? queryInput.value.trim() : "";
+      const letter = letterInput ? letterInput.value.trim().toLowerCase() : "";
 
-    themeToggle.addEventListener("click", () => {
-      const current = document.documentElement.getAttribute("data-theme");
-      const next = current === "dark" ? "light" : "dark";
-      document.documentElement.setAttribute("data-theme", next);
-    });
+      if (!q) {
+        if (resultsCount) resultsCount.textContent = "0 words found";
+        if (resultsContainer) {
+          resultsContainer.innerHTML = "<div class="empty-state">Type a concept, description, or feeling above to find matching words.</div>";
+        }
+        return;
+      }
 
-let db = null;
+      const tokens = tokenize(q);
+      if (tokens.length === 0) return;
 
-        async function initDatabase() {
-            try {
-                const { CapacitorSQLite, SQLiteConnection } = window.CapacitorCommunitySqlite || {};
-                if (!window.Capacitor || !window.Capacitor.isNativePlatform()) {
-                    console.log("Running in web preview mode");
-                    return;
-                }
-                const sqlite = new SQLiteConnection(CapacitorSQLite);
-                await sqlite.copyFromAssets();
-                db = await sqlite.createConnection("revlex", false, "no-encryption", 1, false);
-                await db.open();
-                console.log("RevLex SQLite database connected!");
-            } catch (err) {
-                console.error("Database initialization error:", err);
-            }
+      if (resultsContainer) {
+        resultsContainer.innerHTML = "<div class="loading">Searching offline lexicon...</div>";
+      }
+
+      if (!db) {
+        if (resultsContainer) {
+          resultsContainer.innerHTML = "<div class="empty-state">Database is initializing or running in browser preview. Test inside the installed APK on Android.</div>";
+        }
+        return;
+      }
+
+      try {
+        // Build flexible FTS5 query with OR joining
+        const ftsQuery = tokens.join(" OR ");
+        
+        let querySql = `
+          SELECT word, pos, definition, synonyms, bm25(entries_fts, 2.0, 0.0, 5.0, 2.0) AS rank 
+          FROM entries_fts 
+          WHERE entries_fts MATCH ?
+        `;
+        const params = [ftsQuery];
+
+        if (activePos !== "all") {
+          querySql += " AND pos = ?";
+          params.push(activePos);
         }
 
-        async function performSearch() {
-            const searchInput = document.getElementById('searchInput');
-            const resultsContainer = document.getElementById('resultsContainer');
-            const query = searchInput.value.trim();
-
-            if (!query) return;
-
-            const terms = query.replace(/[^a-zA-Z0-9 ]/g, '').split(/\s+/).filter(Boolean);
-            if (terms.length === 0) return;
-            const ftsQuery = terms.join(' AND ');
-
-            resultsContainer.innerHTML = '<div class="loading">Searching lexicon...</div>';
-
-            try {
-                if (db) {
-                    const sql = `
-                        SELECT word, pos, definition, synonyms, bm25(entries_fts) AS rank 
-                        FROM entries_fts 
-                        WHERE entries_fts MATCH ? 
-                        ORDER BY rank 
-                        LIMIT 30;
-                    `;
-                    const res = await db.query(sql, [ftsQuery]);
-                    renderResults(res.values || []);
-                } else {
-                    resultsContainer.innerHTML = '<div class="empty-state">Database initializing or unavailable in web preview mode.</div>';
-                }
-            } catch (err) {
-                console.error("Search query error:", err);
-                resultsContainer.innerHTML = '<div class="empty-state">No matching words found. Try simpler descriptive words.</div>';
-            }
+        if (letter) {
+          querySql += " AND word LIKE ?";
+          params.push(letter + "%");
         }
 
-        function renderResults(entries) {
-            const resultsContainer = document.getElementById('resultsContainer');
-            if (entries.length === 0) {
-                resultsContainer.innerHTML = '<div class="empty-state">No matching words found for that concept.</div>';
-                return;
-            }
-            resultsContainer.innerHTML = entries.map(item => `
-                <div class="result-card">
-                    <div class="card-header">
-                        <span class="word">${item.word}</span>
-                        <span class="pos">${item.pos}</span>
-                    </div>
-                    <div class="definition">${item.definition}</div>
-                    ${item.synonyms ? `<div class="synonyms"><strong>Synonyms:</strong> ${item.synonyms}</div>` : ''}
-                </div>
-            `).join('');
+        querySql += " ORDER BY rank LIMIT 40;";
+
+        const res = await db.query(querySql, params);
+        const entries = res.values || [];
+
+        if (resultsCount) {
+          resultsCount.textContent = entries.length + (entries.length === 1 ? " word found" : " words found");
         }
 
-        window.addEventListener('DOMContentLoaded', () => {
-            initDatabase();
-            const searchBtn = document.getElementById('searchBtn');
-            const searchInput = document.getElementById('searchInput');
-            if (searchBtn) searchBtn.addEventListener('click', performSearch);
-            if (searchInput) {
-                searchInput.addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter') performSearch();
-                });
-            }
-        });
+        if (entries.length === 0) {
+          resultsContainer.innerHTML = "<div class="empty-state">No matching words found. Try broader descriptive words.</div>";
+          return;
+        }
+
+        resultsContainer.innerHTML = entries.map(item => `
+          <div class="result-card">
+            <div class="card-header">
+              <span class="word">${item.word}</span>
+              <span class="pos">${item.pos}</span>
+            </div>
+            <div class="definition">${item.definition}</div>
+            ${item.synonyms ? `<div class="synonyms"><strong>Related:</strong> ${item.synonyms}</div>` : ""}
+          </div>
+        `).join("");
+
+      } catch (err) {
+        console.error("Search query execution error:", err);
+        if (resultsContainer) {
+          resultsContainer.innerHTML = "<div class="empty-state">Error querying offline database.</div>";
+        }
+      }
+    }
+
+    if (queryInput) {
+      queryInput.addEventListener("input", () => {
+        clearTimeout(window._searchTimer);
+        window._searchTimer = setTimeout(render, 250);
+      });
+    }
+
+    if (letterInput) {
+      letterInput.addEventListener("input", render);
+    }
+
+    if (posFilter) {
+      posFilter.addEventListener("click", (e) => {
+        if (!e.target.classList.contains("pos-btn")) return;
+        document.querySelectorAll(".pos-btn").forEach(b => b.classList.remove("active"));
+        e.target.classList.add("active");
+        activePos = e.target.dataset.pos;
+        render();
+      });
+    }
+
+    if (themeToggle) {
+      themeToggle.addEventListener("click", () => {
+        const current = document.documentElement.getAttribute("data-theme");
+        const next = current === "dark" ? "light" : "dark";
+        document.documentElement.setAttribute("data-theme", next);
+      });
+    }
 
     if ("serviceWorker" in navigator) {
       window.addEventListener("load", () => {
         navigator.serviceWorker.register("./sw.js");
       });
     }
-  </script>
+
+    window.addEventListener("DOMContentLoaded", () => {
+      initDatabase();
+    });
+</script>
 </body>
 </html>
