@@ -345,7 +345,7 @@
       try {
         const { CapacitorSQLite, SQLiteConnection } = window.CapacitorCommunitySqlite || {};
         if (!window.Capacitor || !window.Capacitor.isNativePlatform()) {
-          console.log("Running in web browser mode. SQLite native requires Android/iOS container.");
+          console.log("Web mode: SQLite requires native Android container");
           return;
         }
 
@@ -374,7 +374,7 @@
       if (!q) {
         if (resultsCount) resultsCount.textContent = "0 words found";
         if (resultsContainer) {
-          resultsContainer.innerHTML = "<div class="empty-state">Type a concept, description, or feeling above to find matching words.</div>";
+          resultsContainer.innerHTML = '<div class="empty-state">Type a concept, description, or feeling above to find matching words.</div>';
         }
         return;
       }
@@ -383,20 +383,18 @@
       if (tokens.length === 0) return;
 
       if (resultsContainer) {
-        resultsContainer.innerHTML = "<div class="loading">Searching offline lexicon...</div>";
+        resultsContainer.innerHTML = '<div class="loading">Searching offline lexicon...</div>';
       }
 
       if (!db) {
         if (resultsContainer) {
-          resultsContainer.innerHTML = "<div class="empty-state">Database is initializing or running in browser preview. Test inside the installed APK on Android.</div>";
+          resultsContainer.innerHTML = '<div class="empty-state">Database initializing. Open inside installed Android app.</div>';
         }
         return;
       }
 
       try {
-        // Build flexible FTS5 query with OR joining
         const ftsQuery = tokens.join(" OR ");
-        
         let querySql = `
           SELECT word, pos, definition, synonyms, bm25(entries_fts, 2.0, 0.0, 5.0, 2.0) AS rank 
           FROM entries_fts 
@@ -424,7 +422,7 @@
         }
 
         if (entries.length === 0) {
-          resultsContainer.innerHTML = "<div class="empty-state">No matching words found. Try broader descriptive words.</div>";
+          resultsContainer.innerHTML = '<div class="empty-state">No matching words found. Try broader descriptive words.</div>';
           return;
         }
 
@@ -442,7 +440,7 @@
       } catch (err) {
         console.error("Search query execution error:", err);
         if (resultsContainer) {
-          resultsContainer.innerHTML = "<div class="empty-state">Error querying offline database.</div>";
+          resultsContainer.innerHTML = '<div class="empty-state">Error querying offline database.</div>';
         }
       }
     }
@@ -485,6 +483,6 @@
     window.addEventListener("DOMContentLoaded", () => {
       initDatabase();
     });
-</script>
+  </script>
 </body>
 </html>
