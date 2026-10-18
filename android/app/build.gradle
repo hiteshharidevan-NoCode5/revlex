@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     namespace "com.openlex.revlex"
-    compileSdk 34
+    compileSdk 35
 
     defaultConfig {
         applicationId "com.openlex.revlex"
