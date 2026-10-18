@@ -505,6 +505,88 @@
       document.documentElement.setAttribute("data-theme", next);
     });
 
+let db = null;
+
+        async function initDatabase() {
+            try {
+                const { CapacitorSQLite, SQLiteConnection } = window.CapacitorCommunitySqlite || {};
+                if (!window.Capacitor || !window.Capacitor.isNativePlatform()) {
+                    console.log("Running in web preview mode");
+                    return;
+                }
+                const sqlite = new SQLiteConnection(CapacitorSQLite);
+                await sqlite.copyFromAssets();
+                db = await sqlite.createConnection("revlex", false, "no-encryption", 1, false);
+                await db.open();
+                console.log("RevLex SQLite database connected!");
+            } catch (err) {
+                console.error("Database initialization error:", err);
+            }
+        }
+
+        async function performSearch() {
+            const searchInput = document.getElementById('searchInput');
+            const resultsContainer = document.getElementById('resultsContainer');
+            const query = searchInput.value.trim();
+
+            if (!query) return;
+
+            const terms = query.replace(/[^a-zA-Z0-9 ]/g, '').split(/\s+/).filter(Boolean);
+            if (terms.length === 0) return;
+            const ftsQuery = terms.join(' AND ');
+
+            resultsContainer.innerHTML = '<div class="loading">Searching lexicon...</div>';
+
+            try {
+                if (db) {
+                    const sql = `
+                        SELECT word, pos, definition, synonyms, bm25(entries_fts) AS rank 
+                        FROM entries_fts 
+                        WHERE entries_fts MATCH ? 
+                        ORDER BY rank 
+                        LIMIT 30;
+                    `;
+                    const res = await db.query(sql, [ftsQuery]);
+                    renderResults(res.values || []);
+                } else {
+                    resultsContainer.innerHTML = '<div class="empty-state">Database initializing or unavailable in web preview mode.</div>';
+                }
+            } catch (err) {
+                console.error("Search query error:", err);
+                resultsContainer.innerHTML = '<div class="empty-state">No matching words found. Try simpler descriptive words.</div>';
+            }
+        }
+
+        function renderResults(entries) {
+            const resultsContainer = document.getElementById('resultsContainer');
+            if (entries.length === 0) {
+                resultsContainer.innerHTML = '<div class="empty-state">No matching words found for that concept.</div>';
+                return;
+            }
+            resultsContainer.innerHTML = entries.map(item => `
+                <div class="result-card">
+                    <div class="card-header">
+                        <span class="word">${item.word}</span>
+                        <span class="pos">${item.pos}</span>
+                    </div>
+                    <div class="definition">${item.definition}</div>
+                    ${item.synonyms ? `<div class="synonyms"><strong>Synonyms:</strong> ${item.synonyms}</div>` : ''}
+                </div>
+            `).join('');
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            initDatabase();
+            const searchBtn = document.getElementById('searchBtn');
+            const searchInput = document.getElementById('searchInput');
+            if (searchBtn) searchBtn.addEventListener('click', performSearch);
+            if (searchInput) {
+                searchInput.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') performSearch();
+                });
+            }
+        });
+
     if ("serviceWorker" in navigator) {
       window.addEventListener("load", () => {
         navigator.serviceWorker.register("./sw.js");

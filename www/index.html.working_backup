@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RevLex — Open-Source Reverse Dictionary</title>
+  <meta name="description" content="An open-source, privacy-first reverse dictionary. Offline meaning-to-word finder." />
+  <meta name="theme-color" content="#0B0F17" />
+  <link rel="manifest" href="manifest.json" />
+
+  <style>
+    :root {
+      --bg: #F8FAFC;
+      --surface: #FFFFFF;
+      --border: #E2E8F0;
+      --text-main: #0F172A;
+      --text-muted: #475569;
+      --accent: #1D4ED8;
+      --badge-bg: #F1F5F9;
+      --badge-text: #334155;
+      --input-bg: #FFFFFF;
+      --font-main: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-serif: Georgia, Cambria, "Times New Roman", serif;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0B0F17;
+        --surface: #151E2E;
+        --border: #1E293B;
+        --text-main: #F1F5F9;
+        --text-muted: #94A3B8;
+        --accent: #60A5FA;
+        --badge-bg: #1E293B;
+        --badge-text: #CBD5E1;
+        --input-bg: #111827;
+      }
+    }
+
+    [data-theme="light"] {
+      --bg: #F8FAFC;
+      --surface: #FFFFFF;
+      --border: #E2E8F0;
+      --text-main: #0F172A;
+      --text-muted: #475569;
+      --accent: #1D4ED8;
+      --badge-bg: #F1F5F9;
+      --badge-text: #334155;
+      --input-bg: #FFFFFF;
+    }
+
+    [data-theme="dark"] {
+      --bg: #0B0F17;
+      --surface: #151E2E;
+      --border: #1E293B;
+      --text-main: #F1F5F9;
+      --text-muted: #94A3B8;
+      --accent: #60A5FA;
+      --badge-bg: #1E293B;
+      --badge-text: #CBD5E1;
+      --input-bg: #111827;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-family: var(--font-main);
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 1.25rem 1rem;
+      transition: background-color 0.15s ease, color 0.15s ease;
+    }
+
+    .app-container {
+      width: 100%;
+      max-width: 680px;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding-bottom: 0.6rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .brand {
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .tagline {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-left: 0.5rem;
+      font-weight: 400;
+    }
+
+    .theme-btn {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 0.3rem 0.6rem;
+      font-size: 0.75rem;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .search-box {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .query-input {
+      width: 100%;
+      padding: 0.85rem 1rem;
+      font-size: 1.05rem;
+      background-color: var(--input-bg);
+      color: var(--text-main);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      outline: none;
+      transition: border-color 0.1s;
+    }
+
+    .query-input:focus {
+      border-color: var(--accent);
+    }
+
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .pos-tabs {
+      display: flex;
+      gap: 0.3rem;
+    }
+
+    .pos-btn {
+      background: var(--badge-bg);
+      border: 1px solid var(--border);
+      color: var(--badge-text);
+      font-size: 0.75rem;
+      padding: 0.35rem 0.65rem;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .pos-btn.active {
+      background: var(--accent);
+      color: #FFFFFF;
+      border-color: var(--accent);
+    }
+
+    .letter-filter {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .letter-input {
+      width: 44px;
+      padding: 0.3rem;
+      font-size: 0.85rem;
+      text-align: center;
+      background: var(--input-bg);
+      color: var(--text-main);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      text-transform: uppercase;
+    }
+
+    .results-meta {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .results-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .word-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.9rem 1.1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .word-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .headword {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--accent);
+      font-family: var(--font-serif);
+      letter-spacing: 0.01em;
+    }
+
+    .pos-badge {
+      font-size: 0.68rem;
+      font-style: italic;
+      color: var(--badge-text);
+      background: var(--badge-bg);
+      padding: 0.15rem 0.45rem;
+      border-radius: 3px;
+    }
+
+    .definition {
+      font-size: 0.93rem;
+      line-height: 1.5;
+      color: var(--text-main);
+    }
+
+    .meta-tokens {
+      display: flex;
+      gap: 0.4rem;
+      margin-top: 0.2rem;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .synonym-chip {
+      color: var(--text-muted);
+      background: var(--badge-bg);
+      padding: 0.12rem 0.4rem;
+      border-radius: 3px;
+      font-size: 0.75rem;
+    }
+
+    .empty-state {
+      padding: 2.5rem 1rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      border: 1px dashed var(--border);
+      border-radius: 6px;
+    }
+
+    footer {
+      margin-top: auto;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    footer a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+  <main class="app-container">
+    <header>
+      <div>
+        <span class="brand">RevLex</span>
+        <span class="tagline">Reverse Meaning Finder</span>
+      </div>
+      <button class="theme-btn" id="themeToggle" aria-label="Toggle Theme">Theme</button>
+    </header>
+
+    <section class="search-box">
+      <input 
+        type="search" 
+        id="queryInput" 
+        class="query-input" 
+        placeholder="Describe the meaning (e.g. smell after rain, fear of heights)..." 
+        autofocus
+      />
+
+      <div class="filters">
+        <div class="pos-tabs" id="posFilter">
+          <button class="pos-btn active" data-pos="all">All</button>
+          <button class="pos-btn" data-pos="noun">Noun</button>
+          <button class="pos-btn" data-pos="verb">Verb</button>
+          <button class="pos-btn" data-pos="adj">Adjective</button>
+        </div>
+
+        <div class="letter-filter">
+          <label for="letterInput">Starts with:</label>
+          <input type="text" id="letterInput" class="letter-input" maxlength="2" placeholder="—" />
+        </div>
+      </div>
+    </section>
+
+    <div class="results-meta" id="resultsCount">Top Matches</div>
+
+    <section class="results-list" id="resultsContainer">
+      <div class="empty-state">Enter a definition, concept, or phrase to find candidate words.</div>
+    </section>
+
+    <footer>
+      <strong>RevLex</strong> — An open-source, offline reverse dictionary.<br>
+      Privacy-first • Zero tracking • Companion to OpenLex
+    </footer>
+  </main>
+
+  <script>
+    const LEXICON = [
+      {
+        word: "petrichor",
+        pos: "noun",
+        def: "A pleasant, distinctive smell that frequently accompanies the first rain after a long period of warm, dry weather.",
+        synonyms: ["earthy scent", "rain fragrance"]
+      },
+      {
+        word: "acrophobia",
+        pos: "noun",
+        def: "An extreme or irrational fear of heights.",
+        synonyms: ["vertigo fear", "height anxiety"]
+      },
+      {
+        word: "apophasis",
+        pos: "noun",
+        def: "Mentioning something by declaring that it will not be mentioned.",
+        synonyms: ["paralipsis", "rhetorical omission"]
+      },
+      {
+        word: "defenestration",
+        pos: "noun",
+        def: "The action of throwing someone or something out of a window.",
+        synonyms: ["ejection"]
+      },
+      {
+        word: "hesitate",
+        pos: "verb",
+        def: "Pause before saying or doing something, especially through uncertainty or reluctance.",
+        synonyms: ["falter", "dither", "waver"]
+      },
+      {
+        word: "loquacious",
+        pos: "adj",
+        def: "Tending to talk a great deal; extremely talkative or verbose.",
+        synonyms: ["garrulous", "voluble", "chatty"]
+      },
+      {
+        word: "ephemeral",
+        pos: "adj",
+        def: "Lasting for a very short time; transitory or fleeting.",
+        synonyms: ["fleeting", "transient", "momentary"]
+      },
+      {
+        word: "serendipity",
+        pos: "noun",
+        def: "The occurrence and development of events by chance in a happy or beneficial way.",
+        synonyms: ["happy accident", "good fortune"]
+      },
+      {
+        word: "quixotic",
+        pos: "adj",
+        def: "Exceedingly idealistic; unrealistic and impractical in the pursuit of noble goals.",
+        synonyms: ["idealistic", "visionary", "romantic"]
+      },
+      {
+        word: "anachronism",
+        pos: "noun",
+        def: "A thing belonging or appropriate to a period other than that in which it exists, especially a thing that is conspicuously old-fashioned.",
+        synonyms: ["misplacement", "archaism"]
+      },
+      {
+        word: "reticent",
+        pos: "adj",
+        def: "Not revealing one's thoughts or feelings readily; reserved, uncommunicative, or restrained.",
+        synonyms: ["reserved", "withdrawn", "introverted"]
+      },
+      {
+        word: "intransigent",
+        pos: "adj",
+        def: "Unwilling or refusing to change one's views or to agree about something; stubborn.",
+        synonyms: ["stubborn", "uncompromising", "obstinate"]
+      }
+    ];
+
+    const STOPWORDS = new Set(["a", "an", "the", "in", "on", "of", "to", "for", "with", "that", "it", "or", "and", "by", "is", "are"]);
+
+    function tokenize(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9\s]/g, " ")
+        .split(/\s+/)
+        .filter(t => t.length > 1 && !STOPWORDS.has(t));
+    }
+
+    function searchReverse(query, selectedPos, letterFilter) {
+      const queryTokens = tokenize(query);
+      if (queryTokens.length === 0) return [];
+
+      const prefix = letterFilter.trim().toLowerCase();
+      const scored = [];
+
+      for (const entry of LEXICON) {
+        if (selectedPos !== "all" && entry.pos !== selectedPos) continue;
+        if (prefix && !entry.word.toLowerCase().startsWith(prefix)) continue;
+
+        let score = 0;
+        const defTokens = tokenize(entry.def);
+        const synTokens = entry.synonyms.flatMap(s => tokenize(s));
+        const headwordTokens = tokenize(entry.word);
+
+        for (const q of queryTokens) {
+          if (defTokens.includes(q)) score += 5;
+          else if (defTokens.some(d => d.startsWith(q.slice(0, 4)) || q.startsWith(d.slice(0, 4)))) score += 2;
+
+          if (synTokens.includes(q)) score += 7;
+          if (headwordTokens.includes(q)) score += 10;
+        }
+
+        if (score > 0) {
+          scored.push({ entry, score });
+        }
+      }
+
+      return scored.sort((a, b) => b.score - a.score).map(s => s.entry);
+    }
+
+    const queryInput = document.getElementById("queryInput");
+    const letterInput = document.getElementById("letterInput");
+    const posFilter = document.getElementById("posFilter");
+    const resultsContainer = document.getElementById("resultsContainer");
+    const resultsCount = document.getElementById("resultsCount");
+    const themeToggle = document.getElementById("themeToggle");
+
+    let activePos = "all";
+
+    function render() {
+      const q = queryInput.value;
+      const letter = letterInput.value;
+
+      if (!q.trim() && !letter.trim()) {
+        resultsContainer.innerHTML = `<div class="empty-state">Enter a definition, concept, or phrase to find candidate words.</div>`;
+        resultsCount.textContent = "Top Matches";
+        return;
+      }
+
+      const results = searchReverse(q, activePos, letter);
+
+      if (results.length === 0) {
+        resultsContainer.innerHTML = `<div class="empty-state">No matching words found. Try broader terms or clear the letter filter.</div>`;
+        resultsCount.textContent = "0 Matches Found";
+        return;
+      }
+
+      resultsCount.textContent = `${results.length} Match${results.length > 1 ? "es" : ""}`;
+      resultsContainer.innerHTML = results.map(item => `
+        <article class="word-card">
+          <div class="word-header">
+            <span class="headword">${item.word}</span>
+            <span class="pos-badge">${item.pos}</span>
+          </div>
+          <p class="definition">${item.def}</p>
+          <div class="meta-tokens">
+            ${item.synonyms.map(syn => `<span class="synonym-chip">${syn}</span>`).join("")}
+          </div>
+        </article>
+      `).join("");
+    }
+
+    queryInput.addEventListener("input", render);
+    letterInput.addEventListener("input", render);
+
+    posFilter.addEventListener("click", (e) => {
+      if (!e.target.classList.contains("pos-btn")) return;
+      document.querySelectorAll(".pos-btn").forEach(b => b.classList.remove("active"));
+      e.target.classList.add("active");
+      activePos = e.target.dataset.pos;
+      render();
+    });
+
+    themeToggle.addEventListener("click", () => {
+      const current = document.documentElement.getAttribute("data-theme");
+      const next = current === "dark" ? "light" : "dark";
+      document.documentElement.setAttribute("data-theme", next);
+    });
+
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("./sw.js");
+      });
+    }
+  </script>
+</body>
+</html>
