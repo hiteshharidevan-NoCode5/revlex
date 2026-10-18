@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">RevLex</string>
+    <string name="title_activity_main">RevLex</string>
+    <string name="package_name">com.openlex.revlex</string>
+    <string name="custom_url_scheme">com.openlex.revlex</string>
+</resources>

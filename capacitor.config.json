@@ -1,0 +1,6 @@
+{
+  "appId": "com.openlex.revlex",
+  "appName": "RevLex",
+  "webDir": "www",
+  "bundledWebRuntime": false
+}
