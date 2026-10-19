@@ -531,183 +531,160 @@
 
 
 <style id="revlex-theme-styles">
-  /* Modern Midnight Ink & Neon Teal (Preferred mockup style) */
+  /* 
+     Grayscale Luminance Architecture:
+     - Backgrounds: L < 10% (Dark themes) or L > 96% (Light themes)
+     - Cards: Separated by clear lightness delta + crisp 1px borders
+     - Words & Highlights: High luminance differential (L > 80% or L < 20%)
+     - Definitions: Strict 12:1+ luminance ratio (Pure white on dark, pure black on light)
+  */
+
+  /* 1. Midnight Teal (High Luminance) */
   :root, :root.theme-teals {
-    --bg-color: #0c131c;           /* Deep Midnight Ink */
-    --card-bg: #14202d;           /* Polished Navy-Charcoal */
-    --border-color: #1f3347;       /* Refined structural edge */
-    --text-primary: #ffffff;       /* Pure crisp white */
-    --text-secondary: #8da4be;     /* Soft slate metadata */
-    --accent-word: #38ef7d;        /* Vivid luminous seafoam */
-    --pos-bg: rgba(56, 239, 125, 0.15);
-    --pos-text: #38ef7d;
-    --btn-accent: #26b4cb;
-    --search-glow: rgba(38, 180, 203, 0.4);
-  }
-
-  :root.theme-maritime {
-    --bg-color: #09121d;
-    --card-bg: #122133;
-    --border-color: #1e3a5a;
-    --text-primary: #ffffff;
-    --text-secondary: #8fb1d6;
-    --accent-word: #38bdf8;
-    --pos-bg: rgba(56, 189, 248, 0.16);
-    --pos-text: #38bdf8;
+    --bg-color: #080d14;            /* Grayscale ~5% lightness */
+    --card-bg: #121d28;            /* Grayscale ~12% lightness */
+    --border-color: #273e54;        /* Crisp border boundary */
+    --text-primary: #ffffff;        /* Pure 100% white for definitions */
+    --text-secondary: #b0c4de;      /* High-clarity 75% lightness for metadata */
+    --accent-word: #4ef2c2;         /* 86% luminance cyan-mint */
+    --pos-bg: #1d3f3f;              /* Dark pill */
+    --pos-text: #6ee7b7;            /* Bright pill text */
+    --pos-border: #34d399;          /* Outline survives grayscale */
     --btn-accent: #38bdf8;
-    --search-glow: rgba(56, 189, 248, 0.35);
+    --divider: #1f3347;
   }
 
+  /* 2. Maritime Blue */
+  :root.theme-maritime {
+    --bg-color: #060d17;
+    --card-bg: #0f1c2e;
+    --border-color: #234268;
+    --text-primary: #ffffff;
+    --text-secondary: #bad4f5;
+    --accent-word: #60a5fa;
+    --pos-bg: #162b47;
+    --pos-text: #93c5fd;
+    --pos-border: #60a5fa;
+    --btn-accent: #38bdf8;
+    --divider: #1e3a5a;
+  }
+
+  /* 3. Peach Blossom (Light - Paper Contrast) */
   :root.theme-peach {
-    --bg-color: #fff9f5;
-    --card-bg: #ffffff;
-    --border-color: #fed7aa;
-    --text-primary: #292524;
-    --text-secondary: #78716c;
-    --accent-word: #c2410c;
-    --pos-bg: #ffedd5;
-    --pos-text: #9a3412;
-    --btn-accent: #ea580c;
-    --search-glow: rgba(234, 88, 12, 0.25);
+    --bg-color: #fdfaf6;            /* Warm off-white */
+    --card-bg: #ffffff;             /* Pure white container */
+    --border-color: #d1c4b8;        /* Firm border (grayscale visible) */
+    --text-primary: #12100e;        /* Near-black 8% lightness (maximum contrast) */
+    --text-secondary: #57524d;      /* Readable dark gray */
+    --accent-word: #9a3412;         /* Deep terracotta (turns dark gray, high contrast) */
+    --pos-bg: #f5ebe0;
+    --pos-text: #7c2d12;
+    --pos-border: #c2410c;
+    --btn-accent: #c2410c;
+    --divider: #e7ded5;
   }
 
+  /* 4. Ballet Rose (Light - Clean Print Contrast) */
   :root.theme-rose {
-    --bg-color: #fdf2f4;
+    --bg-color: #fbf7f8;
     --card-bg: #ffffff;
-    --border-color: #fbcfe8;
-    --text-primary: #1e293b;
-    --text-secondary: #64748b;
-    --accent-word: #be185d;
-    --pos-bg: #fce7f3;
-    --pos-text: #9d174d;
-    --btn-accent: #db2777;
-    --search-glow: rgba(219, 39, 119, 0.25);
+    --border-color: #d8c2cc;
+    --text-primary: #10141d;        /* Deep ink black */
+    --text-secondary: #4b5563;
+    --accent-word: #9d174d;         /* Deep berry */
+    --pos-bg: #fae8ee;
+    --pos-text: #831843;
+    --pos-border: #be185d;
+    --btn-accent: #be185d;
+    --divider: #e9d5df;
   }
 
+  /* 5. Velvet Burgundy (OLED Monochrome Certified) */
   :root.theme-burgundy {
-    --bg-color: #160810;
-    --card-bg: #250f1c;
-    --border-color: #451b34;
-    --text-primary: #fae8f0;
-    --text-secondary: #b893a7;
+    --bg-color: #0f050b;
+    --card-bg: #1f0c18;
+    --border-color: #471c36;
+    --text-primary: #ffffff;
+    --text-secondary: #d8b4c8;
     --accent-word: #f472b6;
-    --pos-bg: #4c1a37;
+    --pos-bg: #3a132c;
     --pos-text: #fbcfe8;
+    --pos-border: #f472b6;
     --btn-accent: #fb7185;
-    --search-glow: rgba(244, 114, 182, 0.3);
+    --divider: #3e172f;
   }
 
-  /* Full-bleed responsive layout */
+  /* Structural Typography & High Contrast Borders */
   body {
     background-color: var(--bg-color) !important;
     color: var(--text-primary) !important;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
     margin: 0;
     padding: 0;
-    transition: background-color 0.25s ease, color 0.25s ease;
-  }
-  
-  #results, .results {
-    width: 100% !important;
-    box-sizing: border-box !important;
   }
 
   .result-card {
     background: var(--card-bg) !important;
     border: 1px solid var(--border-color) !important;
-    border-radius: 14px !important;
-    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25) !important;
-    margin-bottom: 14px !important;
+    border-radius: 12px !important;
     padding: 16px 18px !important;
+    margin-bottom: 14px !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.18) !important;
   }
 
   .result-word {
     color: var(--accent-word) !important;
     font-size: 1.35rem !important;
-    font-weight: 700 !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.01em !important;
   }
 
   .result-pos {
     background: var(--pos-bg) !important;
     color: var(--pos-text) !important;
+    border: 1px solid var(--pos-border) !important;
     border-radius: 999px !important;
-    padding: 3px 9px !important;
+    padding: 2px 8px !important;
     font-size: 0.72rem !important;
     font-weight: 700 !important;
     text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
   }
 
   .result-def {
     color: var(--text-primary) !important;
     font-size: 0.95rem !important;
-    line-height: 1.5 !important;
+    line-height: 1.55 !important;
+    font-weight: 400 !important;
+    margin-top: 6px !important;
   }
 
   .result-related {
     color: var(--text-secondary) !important;
-    border-top: 1px dashed var(--border-color) !important;
+    border-top: 1px solid var(--divider) !important;
+    padding-top: 10px !important;
+    margin-top: 10px !important;
+    font-size: 0.82rem !important;
+  }
+
+  .result-related strong {
+    color: var(--text-primary) !important;
+    font-weight: 700 !important;
   }
 
   .openlex-btn {
-    color: var(--btn-accent) !important;
-    border: 1px solid var(--btn-accent) !important;
-    background: transparent !important;
+    color: var(--text-primary) !important;
+    border: 1px solid var(--border-color) !important;
+    background: var(--card-bg) !important;
     border-radius: 8px !important;
-    padding: 4px 10px !important;
-    font-weight: 600 !important;
+    padding: 5px 12px !important;
+    font-size: 0.8rem !important;
+    font-weight: 700 !important;
   }
 
-  /* Modal Sheet for Palette Selection */
-  .palette-modal-backdrop {
-    display: none;
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0, 0, 0, 0.65);
-    backdrop-filter: blur(4px);
-    z-index: 9999;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-  }
-  .palette-modal-backdrop.open {
-    display: flex;
-  }
-  .palette-modal {
-    background: var(--card-bg);
-    border: 1px solid var(--border-color);
-    border-radius: 18px;
-    padding: 20px;
-    width: 100%;
-    max-width: 340px;
-    box-shadow: 0 12px 32px rgba(0,0,0,0.4);
-  }
-  .palette-modal h3 {
-    margin: 0 0 14px 0;
-    font-size: 1rem;
-    font-weight: 700;
-    color: var(--text-primary);
-  }
-  .palette-options {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 8px;
-  }
-  .palette-option-btn {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 14px;
-    border-radius: 10px;
-    border: 1px solid var(--border-color);
-    background: rgba(255,255,255,0.03);
-    color: var(--text-primary);
-    font-size: 0.88rem;
-    font-weight: 600;
-    cursor: pointer;
-  }
-  .palette-option-btn.active {
-    border-color: var(--accent-word);
-    background: rgba(56, 239, 125, 0.08);
-    color: var(--accent-word);
+  .openlex-btn:active {
+    filter: brightness(1.2);
   }
 </style>
 </head>
