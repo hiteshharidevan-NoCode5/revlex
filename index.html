@@ -391,7 +391,41 @@
 
     let activePos = "all";
 
-        async function initDatabase() {
+        
+    function cleanQuery(raw) {
+      let q = raw.toLowerCase().trim();
+      // Remove punctuation except hyphens
+      q = q.replace(/[^a-z0-9\s-]/g, " ");
+
+      // Conversational prefixes/fillers
+      const fillerRegexes = [
+        /^what\s+(do\s+you\s+call|is\s+the\s+word\s+for|is\s+it\s+called|is\s+a)\b/i,
+        /^how\s+do\s+you\s+(call|describe|name)\b/i,
+        /^(a\s+)?(word|term|name)\s+for\b/i,
+        /^meaning\s+of\b/i,
+        /^someone\s+who\b/i,
+        /^a\s+person\s+(who|that|aged|between)?\b/i
+      ];
+
+      for (const r of fillerRegexes) {
+        q = q.replace(r, " ");
+      }
+
+      // Map numeric age phrasing to WordNet/Curated vocabulary
+      q = q.replace(/\b(90\s*(-|to)\s*99|90s|nineties)\b/g, " 90 nineties ");
+      q = q.replace(/\b(80\s*(-|to)\s*89|80s|eighties)\b/g, " 80 eighties ");
+      q = q.replace(/\b(70\s*(-|to)\s*79|70s|seventies)\b/g, " 70 seventies ");
+      q = q.replace(/\b(60\s*(-|to)\s*69|60s|sixties)\b/g, " 60 sixties ");
+      q = q.replace(/\b(100|100s|hundred)\b/g, " 100 hundred centenarian ");
+
+      // Split into tokens and remove common stopwords
+      const stopWords = new Set(["a", "an", "the", "in", "on", "of", "to", "for", "with", "that", "it", "or", "and", "by", "is", "are", "do", "you", "call", "what", "how", "who", "whom", "can", "be", "as", "at", "from"]);
+      const tokens = q.split(/\s+/).filter(t => t.length > 1 && !stopWords.has(t));
+
+      return tokens;
+    }
+
+    async function initDatabase() {
       try {
         const { CapacitorSQLite } = window.Capacitor?.Plugins || {};
         
