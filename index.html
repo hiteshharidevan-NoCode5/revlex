@@ -530,111 +530,84 @@
 
 
 
-<style id="revlex-theme-styles">
-  /* 
-     Grayscale Luminance Architecture:
-     - Backgrounds: L < 10% (Dark themes) or L > 96% (Light themes)
-     - Cards: Separated by clear lightness delta + crisp 1px borders
-     - Words & Highlights: High luminance differential (L > 80% or L < 20%)
-     - Definitions: Strict 12:1+ luminance ratio (Pure white on dark, pure black on light)
-  */
 
-  /* 1. Midnight Teal (High Luminance) */
-  :root, :root.theme-teals {
-    --bg-color: #080d14;            /* Grayscale ~5% lightness */
-    --card-bg: #121d28;            /* Grayscale ~12% lightness */
-    --border-color: #273e54;        /* Crisp border boundary */
-    --text-primary: #ffffff;        /* Pure 100% white for definitions */
-    --text-secondary: #b0c4de;      /* High-clarity 75% lightness for metadata */
-    --accent-word: #4ef2c2;         /* 86% luminance cyan-mint */
-    --pos-bg: #1d3f3f;              /* Dark pill */
-    --pos-text: #6ee7b7;            /* Bright pill text */
-    --pos-border: #34d399;          /* Outline survives grayscale */
-    --btn-accent: #38bdf8;
-    --divider: #1f3347;
+<style id="revlex-clean-theme">
+  /* DEFAULT DARK: Midnight Ink & Vivid Teal */
+  :root, html.dark-mode {
+    --bg-main: #0c131c;
+    --card-bg: #14202d;
+    --card-border: #223548;
+    --text-word: #38ef7d;
+    --text-body: #ffffff;
+    --text-sub: #94a9c2;
+    --pos-bg: rgba(56, 239, 125, 0.15);
+    --pos-text: #38ef7d;
+    --pos-border: #38ef7d;
+    --btn-color: #38bdf8;
+    --btn-border: #38bdf8;
+    --input-bg: #101924;
+    --input-border: #223548;
+    --divider: #1f2f40;
   }
 
-  /* 2. Maritime Blue */
-  :root.theme-maritime {
-    --bg-color: #060d17;
-    --card-bg: #0f1c2e;
-    --border-color: #234268;
-    --text-primary: #ffffff;
-    --text-secondary: #bad4f5;
-    --accent-word: #60a5fa;
-    --pos-bg: #162b47;
-    --pos-text: #93c5fd;
-    --pos-border: #60a5fa;
-    --btn-accent: #38bdf8;
-    --divider: #1e3a5a;
-  }
-
-  /* 3. Peach Blossom (Light - Paper Contrast) */
-  :root.theme-peach {
-    --bg-color: #fdfaf6;            /* Warm off-white */
-    --card-bg: #ffffff;             /* Pure white container */
-    --border-color: #d1c4b8;        /* Firm border (grayscale visible) */
-    --text-primary: #12100e;        /* Near-black 8% lightness (maximum contrast) */
-    --text-secondary: #57524d;      /* Readable dark gray */
-    --accent-word: #9a3412;         /* Deep terracotta (turns dark gray, high contrast) */
-    --pos-bg: #f5ebe0;
-    --pos-text: #7c2d12;
-    --pos-border: #c2410c;
-    --btn-accent: #c2410c;
-    --divider: #e7ded5;
-  }
-
-  /* 4. Ballet Rose (Light - Clean Print Contrast) */
-  :root.theme-rose {
-    --bg-color: #fbf7f8;
+  /* LIGHT: Clean Paper Alabaster */
+  html.light-mode {
+    --bg-main: #f8fafc;
     --card-bg: #ffffff;
-    --border-color: #d8c2cc;
-    --text-primary: #10141d;        /* Deep ink black */
-    --text-secondary: #4b5563;
-    --accent-word: #9d174d;         /* Deep berry */
-    --pos-bg: #fae8ee;
-    --pos-text: #831843;
-    --pos-border: #be185d;
-    --btn-accent: #be185d;
-    --divider: #e9d5df;
+    --card-border: #cbd5e1;
+    --text-word: #0f766e;
+    --text-body: #0f172a;
+    --text-sub: #475569;
+    --pos-bg: #f0fdfa;
+    --pos-text: #0f766e;
+    --pos-border: #0f766e;
+    --btn-color: #0369a1;
+    --btn-border: #0284c7;
+    --input-bg: #ffffff;
+    --input-border: #cbd5e1;
+    --divider: #e2e8f0;
   }
 
-  /* 5. Velvet Burgundy (OLED Monochrome Certified) */
-  :root.theme-burgundy {
-    --bg-color: #0f050b;
-    --card-bg: #1f0c18;
-    --border-color: #471c36;
-    --text-primary: #ffffff;
-    --text-secondary: #d8b4c8;
-    --accent-word: #f472b6;
-    --pos-bg: #3a132c;
-    --pos-text: #fbcfe8;
-    --pos-border: #f472b6;
-    --btn-accent: #fb7185;
-    --divider: #3e172f;
+  /* Adapt to device system mode automatically if no manual preference set */
+  @media (prefers-color-scheme: light) {
+    :root:not(.dark-mode) {
+      --bg-main: #f8fafc;
+      --card-bg: #ffffff;
+      --card-border: #cbd5e1;
+      --text-word: #0f766e;
+      --text-body: #0f172a;
+      --text-sub: #475569;
+      --pos-bg: #f0fdfa;
+      --pos-text: #0f766e;
+      --pos-border: #0f766e;
+      --btn-color: #0369a1;
+      --btn-border: #0284c7;
+      --input-bg: #ffffff;
+      --input-border: #cbd5e1;
+      --divider: #e2e8f0;
+    }
   }
 
-  /* Structural Typography & High Contrast Borders */
   body {
-    background-color: var(--bg-color) !important;
-    color: var(--text-primary) !important;
+    background-color: var(--bg-main) !important;
+    color: var(--text-body) !important;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    -webkit-font-smoothing: antialiased;
     margin: 0;
     padding: 0;
+    transition: background-color 0.2s ease, color 0.2s ease;
   }
 
   .result-card {
     background: var(--card-bg) !important;
-    border: 1px solid var(--border-color) !important;
-    border-radius: 12px !important;
+    border: 1px solid var(--card-border) !important;
+    border-radius: 14px !important;
     padding: 16px 18px !important;
     margin-bottom: 14px !important;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.18) !important;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.15) !important;
   }
 
   .result-word {
-    color: var(--accent-word) !important;
+    color: var(--text-word) !important;
     font-size: 1.35rem !important;
     font-weight: 800 !important;
     letter-spacing: -0.01em !important;
@@ -649,42 +622,35 @@
     font-size: 0.72rem !important;
     font-weight: 700 !important;
     text-transform: uppercase !important;
-    letter-spacing: 0.05em !important;
   }
 
   .result-def {
-    color: var(--text-primary) !important;
+    color: var(--text-body) !important;
     font-size: 0.95rem !important;
     line-height: 1.55 !important;
-    font-weight: 400 !important;
-    margin-top: 6px !important;
   }
 
   .result-related {
-    color: var(--text-secondary) !important;
-    border-top: 1px solid var(--divider) !important;
-    padding-top: 10px !important;
+    color: var(--text-sub) !important;
+    border-top: 1px dashed var(--divider) !important;
     margin-top: 10px !important;
-    font-size: 0.82rem !important;
-  }
-
-  .result-related strong {
-    color: var(--text-primary) !important;
-    font-weight: 700 !important;
+    padding-top: 10px !important;
   }
 
   .openlex-btn {
-    color: var(--text-primary) !important;
-    border: 1px solid var(--border-color) !important;
-    background: var(--card-bg) !important;
+    color: var(--btn-color) !important;
+    border: 1px solid var(--btn-border) !important;
+    background: transparent !important;
     border-radius: 8px !important;
-    padding: 5px 12px !important;
+    padding: 4px 10px !important;
     font-size: 0.8rem !important;
-    font-weight: 700 !important;
+    font-weight: 600 !important;
   }
 
-  .openlex-btn:active {
-    filter: brightness(1.2);
+  /* Reset layout width */
+  #results, .results {
+    width: 100% !important;
+    box-sizing: border-box !important;
   }
 </style>
 </head>
@@ -992,71 +958,39 @@
 
 
 
-<div id="paletteModal" class="palette-modal-backdrop" onclick="if(event.target === this) togglePaletteModal()">
-  <div class="palette-modal">
-    <h3>Choose Palette</h3>
-    <div class="palette-options">
-      <button type="button" class="palette-option-btn" data-theme="teals" onclick="selectPalette('teals')">
-        <span>Vibrant Teal (Midnight)</span>
-        <span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#38ef7d"></span>
-      </button>
-      <button type="button" class="palette-option-btn" data-theme="maritime" onclick="selectPalette('maritime')">
-        <span>Maritime Blue</span>
-        <span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#38bdf8"></span>
-      </button>
-      <button type="button" class="palette-option-btn" data-theme="peach" onclick="selectPalette('peach')">
-        <span>Peach Blossom</span>
-        <span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#ea580c"></span>
-      </button>
-      <button type="button" class="palette-option-btn" data-theme="rose" onclick="selectPalette('rose')">
-        <span>Ballet Rose</span>
-        <span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#db2777"></span>
-      </button>
-      <button type="button" class="palette-option-btn" data-theme="burgundy" onclick="selectPalette('burgundy')">
-        <span>Velvet Burgundy</span>
-        <span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#f472b6"></span>
-      </button>
-    </div>
-  </div>
+
 </div>
 
-<script id="revlex-theme-engine">
-  function togglePaletteModal() {
-    var modal = document.getElementById("paletteModal");
-    if (modal) {
-      modal.classList.toggle("open");
+
+<script id="revlex-clean-engine">
+  function toggleTheme() {
+    var isLight = document.documentElement.classList.contains("light-mode");
+    if (isLight) {
+      document.documentElement.classList.remove("light-mode");
+      document.documentElement.classList.add("dark-mode");
+      localStorage.setItem("revlex_mode", "dark");
+    } else {
+      document.documentElement.classList.remove("dark-mode");
+      document.documentElement.classList.add("light-mode");
+      localStorage.setItem("revlex_mode", "light");
     }
   }
 
-  function selectPalette(name) {
-    var valid = ["teals", "maritime", "peach", "rose", "burgundy"];
-    if (valid.indexOf(name) === -1) name = "teals";
-    valid.forEach(function(t) {
-      document.documentElement.classList.remove("theme-" + t);
-    });
-    document.documentElement.classList.add("theme-" + name);
-    try { localStorage.setItem("revlex_palette", name); } catch(e){}
-
-    document.querySelectorAll(".palette-option-btn").forEach(function(btn) {
-      btn.classList.toggle("active", btn.getAttribute("data-theme") === name);
-    });
-
-    // Auto-close modal after selection
-    togglePaletteModal();
-  }
-
   document.addEventListener("DOMContentLoaded", function() {
-    var saved = "teals";
-    try { saved = localStorage.getItem("revlex_palette") || "teals"; } catch(e){}
-    selectPalette(saved);
+    var saved = localStorage.getItem("revlex_mode");
+    if (saved === "light") {
+      document.documentElement.classList.add("light-mode");
+    } else if (saved === "dark") {
+      document.documentElement.classList.add("dark-mode");
+    }
 
-    // Bind existing top-right Theme button
-    var themeButtons = document.querySelectorAll("header button, .theme-btn, #themeBtn");
-    themeButtons.forEach(function(btn) {
-      if (btn.innerText.toLowerCase().includes("theme") || btn.id === "themeBtn") {
-        btn.onclick = function(e) {
+    // Attach click directly to the existing Theme button
+    var btns = document.querySelectorAll("header button, .theme-btn, #themeBtn, button");
+    btns.forEach(function(b) {
+      if (b.innerText.trim().toLowerCase() === "theme" || b.id === "themeBtn") {
+        b.onclick = function(e) {
           e.preventDefault();
-          togglePaletteModal();
+          toggleTheme();
         };
       }
     });
