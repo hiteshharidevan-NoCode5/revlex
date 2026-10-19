@@ -531,86 +531,113 @@
 
 
 
-<style id="revlex-clean-theme">
-  /* DEFAULT DARK: Midnight Ink & Vivid Teal */
+
+<style id="revlex-tiled-theme">
+  /* DARK THEME: Midnight Ink with Neon Teal Highlights */
   :root, html.dark-mode {
-    --bg-main: #0c131c;
-    --card-bg: #14202d;
-    --card-border: #223548;
-    --text-word: #38ef7d;
-    --text-body: #ffffff;
-    --text-sub: #94a9c2;
-    --pos-bg: rgba(56, 239, 125, 0.15);
-    --pos-text: #38ef7d;
-    --pos-border: #38ef7d;
-    --btn-color: #38bdf8;
-    --btn-border: #38bdf8;
-    --input-bg: #101924;
-    --input-border: #223548;
-    --divider: #1f2f40;
+    --bg-page: #0b131d;
+    --card-bg: #132230;
+    --card-border: #1d354b;
+    --search-bg: #0f1a26;
+    --search-border: #2dd4bf;
+    --search-glow: rgba(45, 212, 191, 0.35);
+    --text-word: #3df2c4;        /* Luminous seafoam teal */
+    --text-body: #ffffff;        /* 100% white for definitions */
+    --text-muted: #8eaec7;       /* Clear secondary contrast */
+    --pos-bg: #1d4040;
+    --pos-text: #a7f3d0;
+    --pos-border: #34d399;
+    --btn-border: #22d3ee;
+    --btn-text: #22d3ee;
+    --btn-bg: rgba(34, 211, 238, 0.08);
   }
 
-  /* LIGHT: Clean Paper Alabaster */
+  /* LIGHT THEME: Frosted Mint with Deep Spruce Teal Typography */
   html.light-mode {
-    --bg-main: #f8fafc;
+    --bg-page: #edf8f6;
     --card-bg: #ffffff;
-    --card-border: #cbd5e1;
-    --text-word: #0f766e;
-    --text-body: #0f172a;
-    --text-sub: #475569;
-    --pos-bg: #f0fdfa;
+    --card-border: #bce3dc;
+    --search-bg: #f8fdfc;
+    --search-border: #14b8a6;
+    --search-glow: rgba(20, 184, 166, 0.25);
+    --text-word: #065f64;        /* Deep spruce teal */
+    --text-body: #0a1922;        /* Dark carbon for readability */
+    --text-muted: #4b6b77;       /* Subdued secondary text */
+    --pos-bg: #ccfbf1;
     --pos-text: #0f766e;
-    --pos-border: #0f766e;
-    --btn-color: #0369a1;
-    --btn-border: #0284c7;
-    --input-bg: #ffffff;
-    --input-border: #cbd5e1;
-    --divider: #e2e8f0;
+    --pos-border: #14b8a6;
+    --btn-border: #0d9488;
+    --btn-text: #0f766e;
+    --btn-bg: rgba(13, 148, 136, 0.08);
   }
 
-  /* Adapt to device system mode automatically if no manual preference set */
+  /* Respect OS setting if user has not tapped manual toggle */
   @media (prefers-color-scheme: light) {
     :root:not(.dark-mode) {
-      --bg-main: #f8fafc;
+      --bg-page: #edf8f6;
       --card-bg: #ffffff;
-      --card-border: #cbd5e1;
-      --text-word: #0f766e;
-      --text-body: #0f172a;
-      --text-sub: #475569;
-      --pos-bg: #f0fdfa;
+      --card-border: #bce3dc;
+      --search-bg: #f8fdfc;
+      --search-border: #14b8a6;
+      --search-glow: rgba(20, 184, 166, 0.25);
+      --text-word: #065f64;
+      --text-body: #0a1922;
+      --text-muted: #4b6b77;
+      --pos-bg: #ccfbf1;
       --pos-text: #0f766e;
-      --pos-border: #0f766e;
-      --btn-color: #0369a1;
-      --btn-border: #0284c7;
-      --input-bg: #ffffff;
-      --input-border: #cbd5e1;
-      --divider: #e2e8f0;
+      --pos-border: #14b8a6;
+      --btn-border: #0d9488;
+      --btn-text: #0f766e;
+      --btn-bg: rgba(13, 148, 136, 0.08);
     }
   }
 
   body {
-    background-color: var(--bg-main) !important;
+    background-color: var(--bg-page) !important;
     color: var(--text-body) !important;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     margin: 0;
     padding: 0;
-    transition: background-color 0.2s ease, color 0.2s ease;
+    -webkit-font-smoothing: antialiased;
+    transition: background-color 0.2s ease;
+  }
+
+  .search-container input, .search-box input {
+    background: var(--search-bg) !important;
+    color: var(--text-body) !important;
+    border: 2px solid var(--search-border) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 0 14px var(--search-glow) !important;
+  }
+
+  /* 2-COLUMN TILED GRID */
+  #results, .results {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 12px !important;
+    padding: 12px !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
   }
 
   .result-card {
     background: var(--card-bg) !important;
     border: 1px solid var(--card-border) !important;
     border-radius: 14px !important;
-    padding: 16px 18px !important;
-    margin-bottom: 14px !important;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.15) !important;
+    padding: 14px !important;
+    margin: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
   }
 
   .result-word {
     color: var(--text-word) !important;
-    font-size: 1.35rem !important;
+    font-size: 1.15rem !important;
     font-weight: 800 !important;
     letter-spacing: -0.01em !important;
+    word-break: break-word !important;
   }
 
   .result-pos {
@@ -618,37 +645,42 @@
     color: var(--pos-text) !important;
     border: 1px solid var(--pos-border) !important;
     border-radius: 999px !important;
-    padding: 2px 8px !important;
-    font-size: 0.72rem !important;
+    padding: 2px 7px !important;
+    font-size: 0.68rem !important;
     font-weight: 700 !important;
     text-transform: uppercase !important;
+    align-self: flex-start !important;
+    margin-top: 4px !important;
   }
 
   .result-def {
     color: var(--text-body) !important;
-    font-size: 0.95rem !important;
-    line-height: 1.55 !important;
+    font-size: 0.88rem !important;
+    line-height: 1.45 !important;
+    margin: 10px 0 !important;
+    flex-grow: 1 !important;
   }
 
   .result-related {
-    color: var(--text-sub) !important;
-    border-top: 1px dashed var(--divider) !important;
-    margin-top: 10px !important;
-    padding-top: 10px !important;
+    color: var(--text-muted) !important;
+    font-size: 0.78rem !important;
+    border-top: 1px dashed var(--card-border) !important;
+    padding-top: 8px !important;
+    margin-bottom: 10px !important;
+    word-break: break-word !important;
   }
 
   .openlex-btn {
-    color: var(--btn-color) !important;
+    color: var(--btn-text) !important;
     border: 1px solid var(--btn-border) !important;
-    background: transparent !important;
+    background: var(--btn-bg) !important;
     border-radius: 8px !important;
-    padding: 4px 10px !important;
-    font-size: 0.8rem !important;
-    font-weight: 600 !important;
-  }
-
-  /* Reset layout width */
-  #results, .results {
+    padding: 6px 8px !important;
+    font-size: 0.75rem !important;
+    font-weight: 700 !important;
+    text-align: center !important;
+    text-decoration: none !important;
+    display: block !important;
     width: 100% !important;
     box-sizing: border-box !important;
   }
@@ -962,7 +994,8 @@
 </div>
 
 
-<script id="revlex-clean-engine">
+
+<script id="revlex-tiled-engine">
   function toggleTheme() {
     var isLight = document.documentElement.classList.contains("light-mode");
     if (isLight) {
@@ -984,7 +1017,6 @@
       document.documentElement.classList.add("dark-mode");
     }
 
-    // Attach click directly to the existing Theme button
     var btns = document.querySelectorAll("header button, .theme-btn, #themeBtn, button");
     btns.forEach(function(b) {
       if (b.innerText.trim().toLowerCase() === "theme" || b.id === "themeBtn") {
