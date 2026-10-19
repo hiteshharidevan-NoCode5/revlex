@@ -537,16 +537,64 @@
 
 
 
-<style id="revlex-wireframe-theme">
-  :root, body {
-    --bg-page: #0a0a0c;
-    --card-bg: #121316;
-    --wire-border: #e2e8f0;       /* High-contrast chalk white wireframe outline */
-    --wire-border-subtle: #475569;/* Subtle inner divider line */
+
+<style id="revlex-tiled-theme">
+  /* DARK THEME (Left mockup): Midnight Ink + Luminous Teal */
+  :root, html.dark-mode {
+    --bg-page: #0d1520;
+    --card-bg: #152434;
+    --card-border: #213a52;
+    --search-bg: #0f1a26;
+    --search-border: #2dd4bf;
+    --search-glow: rgba(45, 212, 191, 0.45);
     --text-word: #ffffff;
-    --text-body: #f8fafc;
-    --text-muted: #94a3b8;
-    --pill-bg: #18191e;
+    --text-body: #e2e8f0;
+    --text-muted: #8ca3ba;
+    --pos-bg: #224343;
+    --pos-text: #5eead4;
+    --pos-border: #2dd4bf;
+    --btn-border: #2dd4bf;
+    --btn-text: #2dd4bf;
+    --btn-bg: rgba(45, 212, 191, 0.08);
+  }
+
+  /* LIGHT THEME (Right mockup): Frosted Mint + Deep Slate Typography */
+  html.light-mode {
+    --bg-page: #e8f5f3;
+    --card-bg: #ffffff;
+    --card-border: #bce4dc;
+    --search-bg: #ffffff;
+    --search-border: #0d9488;
+    --search-glow: rgba(13, 148, 136, 0.25);
+    --text-word: #042f2e;
+    --text-body: #0f172a;
+    --text-muted: #475569;
+    --pos-bg: #ccfbf1;
+    --pos-text: #0f766e;
+    --pos-border: #0d9488;
+    --btn-border: #0d9488;
+    --btn-text: #0f766e;
+    --btn-bg: rgba(13, 148, 136, 0.06);
+  }
+
+  @media (prefers-color-scheme: light) {
+    :root:not(.dark-mode) {
+      --bg-page: #e8f5f3;
+      --card-bg: #ffffff;
+      --card-border: #bce4dc;
+      --search-bg: #ffffff;
+      --search-border: #0d9488;
+      --search-glow: rgba(13, 148, 136, 0.25);
+      --text-word: #042f2e;
+      --text-body: #0f172a;
+      --text-muted: #475569;
+      --pos-bg: #ccfbf1;
+      --pos-text: #0f766e;
+      --pos-border: #0d9488;
+      --btn-border: #0d9488;
+      --btn-text: #0f766e;
+      --btn-bg: rgba(13, 148, 136, 0.06);
+    }
   }
 
   body {
@@ -556,126 +604,129 @@
     margin: 0;
     padding: 0;
     -webkit-font-smoothing: antialiased;
+    transition: background-color 0.2s ease;
   }
 
-  /* Search Bar */
+  /* Search Input Field */
   .search-container input, .search-box input, input[type="search"], input[type="text"] {
-    background: #121316 !important;
-    color: #ffffff !important;
-    border: 1.5px solid var(--wire-border) !important;
+    background: var(--search-bg) !important;
+    color: var(--text-word) !important;
+    border: 2px solid var(--search-border) !important;
     border-radius: 14px !important;
+    box-shadow: 0 0 12px var(--search-glow) !important;
   }
 
-  /* POS Filter Pills (All, Noun, Verb, Adjective) */
+  /* Filter Buttons */
   .filter-pill, .filter-chip, .filter-btn, .filters button, .pos-filters button {
-    background: transparent !important;
+    background: var(--card-bg) !important;
     color: var(--text-muted) !important;
-    border: 1px solid var(--wire-border-subtle) !important;
+    border: 1px solid var(--card-border) !important;
     border-radius: 999px !important;
     font-weight: 600 !important;
   }
   .filter-pill.active, .filter-chip.active, .filter-btn.active, .filters button.active, .pos-filters button.active {
-    background: #ffffff !important;
-    color: #0a0a0c !important;
-    border-color: #ffffff !important;
+    background: var(--btn-text) !important;
+    color: #ffffff !important;
+    border-color: var(--btn-text) !important;
   }
 
-  /* Results Container */
+  /* 2-COLUMN TILED RESULTS GRID */
   #results, .results {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 16px !important;
-    padding: 12px 16px 32px !important;
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 12px !important;
+    padding: 12px !important;
     box-sizing: border-box !important;
     width: 100% !important;
+    align-items: stretch !important;
   }
 
-  /* Result Card Wireframe Box */
+  /* Tiled Card Design */
   .result-card {
     background: var(--card-bg) !important;
-    border: 1.5px solid var(--wire-border) !important;
+    border: 1px solid var(--card-border) !important;
     border-radius: 16px !important;
-    padding: 18px 20px !important;
+    padding: 14px !important;
     margin: 0 !important;
     display: flex !important;
     flex-direction: column !important;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6) !important;
+    justify-content: space-between !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+    box-sizing: border-box !important;
   }
 
-  /* Card Header: Word on Left, Pill on Right */
-  .card-header {
+  .card-top {
     display: flex !important;
-    align-items: center !important;
-    justify-content: space-between !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 6px !important;
     margin-bottom: 8px !important;
   }
 
-  .card-header .word {
+  .card-top .word {
     color: var(--text-word) !important;
-    font-size: 1.45rem !important;
+    font-size: 1.15rem !important;
     font-weight: 800 !important;
     letter-spacing: -0.01em !important;
+    word-break: break-word !important;
+    line-height: 1.25 !important;
   }
 
-  .card-header .pos {
-    background: transparent !important;
-    color: #ffffff !important;
-    border: 1.5px solid var(--wire-border) !important;
+  .card-top .pos {
+    background: var(--pos-bg) !important;
+    color: var(--pos-text) !important;
+    border: 1px solid var(--pos-border) !important;
     border-radius: 999px !important;
-    padding: 3px 10px !important;
-    font-size: 0.72rem !important;
-    font-weight: 800 !important;
+    padding: 2px 7px !important;
+    font-size: 0.65rem !important;
+    font-weight: 700 !important;
     text-transform: uppercase !important;
-    letter-spacing: 0.06em !important;
+    letter-spacing: 0.04em !important;
   }
 
-  /* Definition Text */
   .result-card .definition {
     color: var(--text-body) !important;
-    font-size: 0.98rem !important;
-    line-height: 1.55 !important;
-    font-weight: 400 !important;
-    margin: 8px 0 14px !important;
+    font-size: 0.86rem !important;
+    line-height: 1.45 !important;
+    margin-bottom: 10px !important;
+    flex-grow: 1 !important;
   }
 
-  /* Synonyms / Related Section */
   .result-card .synonyms {
-    color: var(--text-body) !important;
-    font-size: 0.86rem !important;
-    border-top: 1px solid var(--wire-border-subtle) !important;
-    padding-top: 12px !important;
-    margin-bottom: 14px !important;
+    color: var(--text-muted) !important;
+    font-size: 0.76rem !important;
+    border-top: 1px dashed var(--card-border) !important;
+    padding-top: 8px !important;
+    margin-bottom: 10px !important;
+    word-break: break-word !important;
   }
 
   .result-card .synonyms .syn-label {
-    color: var(--text-muted) !important;
-    margin-right: 4px !important;
+    font-weight: 700 !important;
   }
 
-  /* Look Up in OpenLex Button */
   .card-action {
     width: 100% !important;
   }
 
   .openlex-btn {
-    color: #ffffff !important;
-    border: 1.5px solid var(--wire-border) !important;
-    background: transparent !important;
+    color: var(--btn-text) !important;
+    border: 1.5px solid var(--btn-border) !important;
+    background: var(--btn-bg) !important;
     border-radius: 999px !important;
-    padding: 10px 16px !important;
-    font-size: 0.88rem !important;
+    padding: 6px 10px !important;
+    font-size: 0.74rem !important;
     font-weight: 700 !important;
     text-align: center !important;
-    cursor: pointer !important;
+    text-decoration: none !important;
     display: block !important;
     width: 100% !important;
     box-sizing: border-box !important;
-    transition: background 0.15s ease, color 0.15s ease;
+    cursor: pointer !important;
   }
 
   .openlex-btn:active {
-    background: #ffffff !important;
-    color: #000000 !important;
+    opacity: 0.7;
   }
 </style>
 </head>
@@ -895,14 +946,14 @@
 
         resultsContainer.innerHTML = entries.map(item => `
           <div class="result-card">
-            <div class="card-header">
+            <div class="card-top">
               <span class="word">${item.word}</span>
               <span class="pos">${item.pos || "NOUN"}</span>
             </div>
             <div class="definition">${item.definition}</div>
             ${item.synonyms ? `<div class="synonyms"><span class="syn-label">Related:</span> ${item.synonyms}</div>` : ""}
             <div class="card-action">
-              <button type="button" class="openlex-btn" onclick="lookupWord('${item.word}')">Look up in OpenLex</button>
+              <button type="button" class="openlex-btn" onclick="lookupWord('${item.word}')">Look up in OpenLex ↗</button>
             </div>
           </div>
         `).join("");
@@ -1000,5 +1051,38 @@
 
 
 
+<script id="revlex-theme-engine">
+  function toggleTheme() {
+    var isLight = document.documentElement.classList.contains("light-mode");
+    if (isLight) {
+      document.documentElement.classList.remove("light-mode");
+      document.documentElement.classList.add("dark-mode");
+      localStorage.setItem("revlex_mode", "dark");
+    } else {
+      document.documentElement.classList.remove("dark-mode");
+      document.documentElement.classList.add("light-mode");
+      localStorage.setItem("revlex_mode", "light");
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", function() {
+    var saved = localStorage.getItem("revlex_mode");
+    if (saved === "light") {
+      document.documentElement.classList.add("light-mode");
+    } else if (saved === "dark") {
+      document.documentElement.classList.add("dark-mode");
+    }
+
+    var btns = document.querySelectorAll("header button, .theme-btn, #themeBtn, button");
+    btns.forEach(function(b) {
+      if (b.innerText.trim().toLowerCase() === "theme" || b.id === "themeBtn") {
+        b.onclick = function(e) {
+          e.preventDefault();
+          toggleTheme();
+        };
+      }
+    });
+  });
+</script>
 </body>
 </html>
