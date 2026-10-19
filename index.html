@@ -532,6 +532,7 @@
 
 
 
+
 <style id="revlex-tiled-theme">
   /* DARK THEME: Midnight Ink with Neon Teal Highlights */
   :root, html.dark-mode {
@@ -541,7 +542,7 @@
     --search-bg: #0f1a26;
     --search-border: #2dd4bf;
     --search-glow: rgba(45, 212, 191, 0.35);
-    --text-word: #3df2c4;        /* Luminous seafoam teal */
+    --text-word: #3df2c4;        /* Luminous seafoam teal (high luminance) */
     --text-body: #ffffff;        /* 100% white for definitions */
     --text-muted: #8eaec7;       /* Clear secondary contrast */
     --pos-bg: #1d4040;
@@ -560,7 +561,7 @@
     --search-bg: #f8fdfc;
     --search-border: #14b8a6;
     --search-glow: rgba(20, 184, 166, 0.25);
-    --text-word: #065f64;        /* Deep spruce teal */
+    --text-word: #065f64;        /* Deep spruce teal (bold and legible) */
     --text-body: #0a1922;        /* Dark carbon for readability */
     --text-muted: #4b6b77;       /* Subdued secondary text */
     --pos-bg: #ccfbf1;
@@ -592,6 +593,7 @@
     }
   }
 
+  /* Core Layout */
   body {
     background-color: var(--bg-page) !important;
     color: var(--text-body) !important;
@@ -602,6 +604,7 @@
     transition: background-color 0.2s ease;
   }
 
+  /* Glow Search Container from Mockup */
   .search-container input, .search-box input {
     background: var(--search-bg) !important;
     color: var(--text-body) !important;
@@ -620,6 +623,7 @@
     width: 100% !important;
   }
 
+  /* Tiled Card Appearance */
   .result-card {
     background: var(--card-bg) !important;
     border: 1px solid var(--card-border) !important;
@@ -992,6 +996,7 @@
 
 
 </div>
+
 
 
 
