@@ -280,17 +280,7 @@
       text-decoration: none;
     }
   
-  .result-card {
-    background: var(--card-bg, #161e2e);
-    border: 1px solid var(--border-color, #222f46);
-    border-radius: 12px;
-    padding: 16px;
-    margin-bottom: 14px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
+  
   .result-header {
     display: flex;
     align-items: baseline;
@@ -337,23 +327,8 @@
     display: flex;
     justify-content: flex-end;
   }
-  .openlex-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: #38bdf8;
-    background: rgba(56, 189, 248, 0.08);
-    border: 1px solid rgba(56, 189, 248, 0.25);
-    padding: 4px 10px;
-    border-radius: 6px;
-    text-decoration: none;
-    transition: background 0.2s ease, border-color 0.2s ease;
-  }
-  .openlex-btn:active {
-    background: rgba(56, 189, 248, 0.2);
-  }
+  
+  
 
   :root {
     --bg-color: #242b3d;
@@ -370,14 +345,7 @@
     background-color: var(--bg-color) !important;
     color: var(--text-primary) !important;
   }
-  .result-card {
-    background: var(--card-bg) !important;
-    border: 1px solid var(--border-color) !important;
-    border-radius: 14px !important;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3) !important;
-    padding: 18px !important;
-    margin-bottom: 16px !important;
-  }
+  
   .result-word {
     color: var(--accent-word) !important;
     font-size: 1.35rem !important;
@@ -406,17 +374,8 @@
   .result-related strong {
     color: #c5e4f3 !important;
   }
-  .openlex-btn {
-    color: var(--btn-accent) !important;
-    background: rgba(39, 212, 235, 0.12) !important;
-    border: 1px solid rgba(39, 212, 235, 0.35) !important;
-    border-radius: 8px !important;
-    font-size: 0.8rem !important;
-    font-weight: 600 !important;
-  }
-  .openlex-btn:active {
-    background: rgba(39, 212, 235, 0.25) !important;
-  }
+  
+  
   .openlex-link-row {
     border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
   }
@@ -466,14 +425,7 @@
     color: var(--text-primary);
     transition: background-color 0.2s, color 0.2s;
   }
-  .result-card {
-    background: var(--card-bg);
-    border: 1px solid var(--border-color);
-    border-radius: 14px;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
-    padding: 18px;
-    margin-bottom: 16px;
-  }
+  
   .result-word {
     color: var(--accent-word);
     font-size: 1.35rem;
@@ -496,14 +448,7 @@
     color: var(--text-secondary);
     border-top: 1px dashed var(--border-color);
   }
-  .openlex-btn {
-    color: var(--btn-accent);
-    background: rgba(39, 212, 235, 0.1);
-    border: 1px solid var(--btn-accent);
-    border-radius: 8px;
-    font-size: 0.8rem;
-    font-weight: 600;
-  }
+  
   .theme-selectors {
     display: flex;
     gap: 8px;
@@ -539,98 +484,114 @@
 
 
 
-<style id="revlex-master-theme">
-  /* THEME 1: Midnight Teal (Default Dark) */
-  :root, html.theme-teal {
-    --bg-page: #0a1118;
-    --card-bg: #142533;
+
+<style id="revlex-master-engine-style">
+  /* =========================================================
+     1. THEME DEFINITIONS
+     ========================================================= */
+
+  /* THEME 1: MIDNIGHT TEAL (Default Dark) */
+  :root, html.theme-teal, html:not(.theme-wireframe):not(.theme-light) {
+    --page-bg: #0b131d;
+    --card-bg: #142332;
     --card-border: #223f54;
     --search-bg: #0f1c27;
     --search-border: #2dd4bf;
-    --search-glow: rgba(45, 212, 191, 0.35);
-    --text-word: #ffffff;
-    --text-body: #e2e8f0;
-    --text-muted: #8ca3ba;
+    --search-glow: rgba(45, 212, 191, 0.4);
+    --word-color: #ffffff;
     --pos-bg: #1c3d3d;
     --pos-text: #5eead4;
     --pos-border: #2dd4bf;
+    --def-color: #e2e8f0;
+    --related-color: #8ca3ba;
     --btn-border: #2dd4bf;
     --btn-text: #2dd4bf;
     --btn-bg: rgba(45, 212, 191, 0.08);
   }
 
-  /* THEME 2: Monochrome Wireframe (High-Contrast B&W) */
+  /* THEME 2: MONOCHROME WIREFRAME (Exact OLED Chalk White Match) */
   html.theme-wireframe {
-    --bg-page: #08090a;
-    --card-bg: #101216;
-    --card-border: #e2e8f0;
-    --search-bg: #101216;
-    --search-border: #e2e8f0;
-    --search-glow: rgba(255, 255, 255, 0.08);
-    --text-word: #ffffff;
-    --text-body: #f8fafc;
-    --text-muted: #94a3b8;
-    --pos-bg: transparent;
-    --pos-text: #ffffff;
-    --pos-border: #e2e8f0;
-    --btn-border: #e2e8f0;
-    --btn-text: #ffffff;
-    --btn-bg: transparent;
+    --page-bg: #000000 !important;
+    --card-bg: #0a0a0c !important;
+    --card-border: #e2e8f0 !important;
+    --search-bg: #0a0a0c !important;
+    --search-border: #e2e8f0 !important;
+    --search-glow: rgba(255, 255, 255, 0.1) !important;
+    --word-color: #ffffff !important;
+    --pos-bg: transparent !important;
+    --pos-text: #ffffff !important;
+    --pos-border: #e2e8f0 !important;
+    --def-color: #f8fafc !important;
+    --related-color: #94a3b8 !important;
+    --btn-border: #e2e8f0 !important;
+    --btn-text: #ffffff !important;
+    --btn-bg: transparent !important;
   }
 
-  /* THEME 3: Frosted Mint Light */
+  /* THEME 3: FROSTED MINT LIGHT */
   html.theme-light {
-    --bg-page: #edf8f6;
-    --card-bg: #ffffff;
-    --card-border: #bce4dc;
-    --search-bg: #ffffff;
-    --search-border: #0d9488;
-    --search-glow: rgba(13, 148, 136, 0.2);
-    --text-word: #064e4b;
-    --text-body: #0f172a;
-    --text-muted: #475569;
-    --pos-bg: #ccfbf1;
-    --pos-text: #0f766e;
-    --pos-border: #0d9488;
-    --btn-border: #0d9488;
-    --btn-text: #0f766e;
-    --btn-bg: rgba(13, 148, 136, 0.06);
+    --page-bg: #edf8f6 !important;
+    --card-bg: #ffffff !important;
+    --card-border: #bce4dc !important;
+    --search-bg: #ffffff !important;
+    --search-border: #0d9488 !important;
+    --search-glow: rgba(13, 148, 136, 0.2) !important;
+    --word-color: #064e4b !important;
+    --pos-bg: #ccfbf1 !important;
+    --pos-text: #0f766e !important;
+    --pos-border: #0d9488 !important;
+    --def-color: #0f172a !important;
+    --related-color: #475569 !important;
+    --btn-border: #0d9488 !important;
+    --btn-text: #0f766e !important;
+    --btn-bg: rgba(13, 148, 136, 0.06) !important;
   }
 
+  /* =========================================================
+     2. GLOBAL & SEARCH STYLING
+     ========================================================= */
   body {
-    background-color: var(--bg-page) !important;
-    color: var(--text-body) !important;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    margin: 0;
-    padding: 0;
-    -webkit-font-smoothing: antialiased;
-    transition: background-color 0.2s ease;
+    background-color: var(--page-bg) !important;
+    color: var(--def-color) !important;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    -webkit-font-smoothing: antialiased !important;
   }
 
-  /* Search Input Field */
   .search-container input, .search-box input, input[type="search"], input[type="text"] {
     background: var(--search-bg) !important;
-    color: var(--text-word) !important;
+    color: var(--word-color) !important;
     border: 1.5px solid var(--search-border) !important;
-    border-radius: 12px !important;
-    box-shadow: 0 0 10px var(--search-glow) !important;
+    border-radius: 14px !important;
+    box-shadow: 0 0 12px var(--search-glow) !important;
   }
 
-  /* Filter Pills */
-  .filter-pill, .filter-chip, .filter-btn, .filters button, .pos-filters button {
+  .pos-tabs, .filters, .pos-filters {
+    display: flex !important;
+    gap: 8px !important;
+    overflow-x: auto !important;
+    padding: 8px 14px !important;
+  }
+
+  .pos-btn, .filter-pill, .filter-chip {
     background: var(--card-bg) !important;
-    color: var(--text-muted) !important;
+    color: var(--related-color) !important;
     border: 1px solid var(--card-border) !important;
     border-radius: 999px !important;
+    font-weight: 600 !important;
   }
-  .filter-pill.active, .filter-chip.active, .filter-btn.active, .filters button.active {
+
+  .pos-btn.active, .filter-pill.active {
     background: var(--btn-text) !important;
     color: #ffffff !important;
     border-color: var(--btn-text) !important;
   }
 
-  /* STRICT 2-COLUMN TILED RESULTS GRID */
-  #results, .results, div[id*="results"], div[class*="results"] {
+  /* =========================================================
+     3. 2-COLUMN TILED RESULTS GRID
+     ========================================================= */
+  #resultsContainer, #results, .results {
     display: grid !important;
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
     gap: 12px !important;
@@ -640,86 +601,88 @@
     align-items: stretch !important;
   }
 
-  /* Tiled Card Design */
+  /* Result Card Wireframe Box */
   .result-card {
     background: var(--card-bg) !important;
     border: 1.5px solid var(--card-border) !important;
-    border-radius: 14px !important;
+    border-radius: 16px !important;
     padding: 14px !important;
     margin: 0 !important;
     display: flex !important;
     flex-direction: column !important;
     justify-content: space-between !important;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2) !important;
     box-sizing: border-box !important;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.4) !important;
+  }
+
+  /* Card Header: Word on Left, Pill on Right (Horizontal Alignment) */
+  .result-card .card-header {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 8px !important;
+    margin-bottom: 8px !important;
     width: 100% !important;
   }
 
-  /* Card Header: Word + Pill */
-  .card-header, .card-top {
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: flex-start !important;
-    gap: 6px !important;
-    margin-bottom: 8px !important;
-  }
-
-  .card-header .word, .card-top .word {
-    color: var(--text-word) !important;
+  .result-card .card-header .word {
+    color: var(--word-color) !important;
     font-size: 1.15rem !important;
     font-weight: 800 !important;
     letter-spacing: -0.01em !important;
     word-break: break-word !important;
-    line-height: 1.2 !important;
+    line-height: 1.25 !important;
   }
 
-  .card-header .pos, .card-top .pos {
+  .result-card .card-header .pos {
     background: var(--pos-bg) !important;
     color: var(--pos-text) !important;
-    border: 1px solid var(--pos-border) !important;
+    border: 1.5px solid var(--pos-border) !important;
     border-radius: 999px !important;
     padding: 2px 7px !important;
     font-size: 0.65rem !important;
     font-weight: 800 !important;
     text-transform: uppercase !important;
-    letter-spacing: 0.04em !important;
+    letter-spacing: 0.05em !important;
+    flex-shrink: 0 !important;
   }
 
   /* Definition */
   .result-card .definition {
-    color: var(--text-body) !important;
+    color: var(--def-color) !important;
     font-size: 0.86rem !important;
     line-height: 1.45 !important;
     margin-bottom: 10px !important;
     flex-grow: 1 !important;
   }
 
-  /* Synonyms / Related */
+  /* Synonyms / Related Section */
   .result-card .synonyms {
-    color: var(--text-muted) !important;
+    color: var(--related-color) !important;
     font-size: 0.76rem !important;
-    border-top: 1px dashed var(--card-border) !important;
+    border-top: 1px solid var(--card-border) !important;
     padding-top: 8px !important;
     margin-bottom: 10px !important;
     word-break: break-word !important;
   }
 
   .result-card .synonyms .syn-label, .result-card .synonyms strong {
-    color: var(--text-body) !important;
+    color: var(--def-color) !important;
     font-weight: 700 !important;
   }
 
-  /* OpenLex Button */
-  .card-action {
+  /* Pill Look up Button */
+  .result-card .card-action {
     width: 100% !important;
   }
 
-  .openlex-btn {
+  .result-card .openlex-btn {
     color: var(--btn-text) !important;
     border: 1.5px solid var(--btn-border) !important;
     background: var(--btn-bg) !important;
     border-radius: 999px !important;
-    padding: 6px 8px !important;
+    padding: 7px 10px !important;
     font-size: 0.74rem !important;
     font-weight: 700 !important;
     text-align: center !important;
@@ -730,8 +693,8 @@
     cursor: pointer !important;
   }
 
-  .openlex-btn:active {
-    opacity: 0.7;
+  .result-card .openlex-btn:active {
+    filter: brightness(1.3) !important;
   }
 </style>
 </head>
@@ -1057,21 +1020,21 @@
 
 
 
-<script id="revlex-master-engine">
+
+<script id="revlex-master-cycle-script">
   var themes = ["theme-teal", "theme-wireframe", "theme-light"];
 
   function updateThemeButtonLabel(current) {
-    var btn = document.querySelector("header button, .theme-btn, #themeBtn, button");
     var labelMap = {
-      "theme-teal": "Teal",
-      "theme-wireframe": "Wireframe",
-      "theme-light": "Light"
+      "theme-teal": "Theme: Teal",
+      "theme-wireframe": "Theme: Wireframe",
+      "theme-light": "Theme: Light"
     };
     var themeButtons = document.querySelectorAll("header button, .theme-btn, #themeBtn, button");
     themeButtons.forEach(function(b) {
       if (b.innerText.toLowerCase().includes("theme") || b.id === "themeBtn" || b.hasAttribute("data-theme-btn")) {
         b.setAttribute("data-theme-btn", "true");
-        b.innerText = "Theme: " + (labelMap[current] || "Teal");
+        b.innerText = labelMap[current] || "Theme: Teal";
       }
     });
   }
