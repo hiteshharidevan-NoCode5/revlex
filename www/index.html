@@ -420,6 +420,111 @@
   .openlex-link-row {
     border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
   }
+
+  /* Dynamic themes */
+  :root.theme-teals {
+    --bg-color: #242b3d;
+    --card-bg: #1b4b60;
+    --border-color: #2f6b85;
+    --text-primary: #edfcfb;
+    --text-secondary: #92b8d0;
+    --accent-word: #53dfd1; /* Row 1, Col 5 */
+    --pos-bg: #26b4cb;     /* Row 2, Col 5 (Teal) */
+    --pos-text: #ffffff;
+    --btn-accent: #26b4cb;
+  }
+
+  :root.theme-maritime {
+    --bg-color: #242b3d;
+    --card-bg: #1b4b60;
+    --border-color: #2f6b85;
+    --text-primary: #edfcfb;
+    --text-secondary: #92b8d0;
+    --accent-word: #53dfd1; /* Row 1, Col 5 */
+    --pos-bg: #1c8cd4;     /* Row 2, Col 6 (Blue) */
+    --pos-text: #ffffff;
+    --btn-accent: #1c8cd4;
+  }
+
+  /* Light adaptation overrides */
+  @media (prefers-color-scheme: light) {
+    :root:not(.dark-force) {
+      --bg-color: #e2f7f4;
+      --card-bg: #ffffff;
+      --border-color: #c4e3df;
+      --text-primary: #1b4b60;
+      --text-secondary: #5a7380;
+      --accent-word: #147266;
+      --pos-bg: var(--btn-accent);
+      --pos-text: #ffffff;
+    }
+  }
+
+  /* Core UI Application */
+  body {
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    transition: background-color 0.2s, color 0.2s;
+  }
+  .result-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+    padding: 18px;
+    margin-bottom: 16px;
+  }
+  .result-word {
+    color: var(--accent-word);
+    font-size: 1.35rem;
+    font-weight: 700;
+  }
+  .result-pos {
+    background: var(--pos-bg);
+    color: var(--pos-text);
+    border-radius: 999px;
+    padding: 2px 8px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+  .result-def {
+    color: var(--text-primary);
+    font-size: 0.95rem;
+  }
+  .result-related {
+    color: var(--text-secondary);
+    border-top: 1px dashed var(--border-color);
+  }
+  .openlex-btn {
+    color: var(--btn-accent);
+    background: rgba(39, 212, 235, 0.1);
+    border: 1px solid var(--btn-accent);
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+  .theme-selectors {
+    display: flex;
+    gap: 8px;
+    margin: 12px 0;
+    padding: 0 16px;
+  }
+  .theme-chip {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 999px;
+    border: 1px solid rgba(255,255,255,0.15);
+    background: rgba(255,255,255,0.05);
+    color: var(--text-secondary);
+    cursor: pointer;
+  }
+  .theme-chip.active {
+    border-color: var(--accent-word);
+    background: var(--card-bg);
+    color: var(--accent-word);
+  }
 </style>
 </head>
 <body>
@@ -691,5 +796,32 @@
       initDatabase();
     });
   </script>
+<script>
+    function setPalette(name) {
+      document.documentElement.classList.remove("theme-teals", "theme-maritime");
+      
+      if (name === "maritime") {
+        document.documentElement.classList.add("theme-maritime");
+      } else {
+        document.documentElement.classList.add("theme-teals");
+      }
+      
+      localStorage.setItem("revlex_palette", name);
+      
+      // Update toggle chips visually
+      document.querySelectorAll(".theme-chip").forEach(chip => {
+        chip.classList.toggle("active", 
+          (name === "teals" && chip.innerText.includes("Teals")) || 
+          (name === "maritime" && chip.innerText.includes("Maritime"))
+        );
+      });
+    }
+    
+    // Auto restore previous choice
+    document.addEventListener("DOMContentLoaded", () => {
+      const saved = localStorage.getItem("revlex_palette") || "teals";
+      setPalette(saved);
+    });
+</script>
 </body>
 </html>
