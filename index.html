@@ -279,7 +279,57 @@
       color: var(--accent);
       text-decoration: none;
     }
-  </style>
+  
+  .result-card {
+    background: var(--card-bg, #161e2e);
+    border: 1px solid var(--border-color, #222f46);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 14px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .result-header {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .result-word {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #60a5fa;
+    letter-spacing: -0.01em;
+  }
+  .result-pos {
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 2px 8px;
+    border-radius: 6px;
+    background: #1e293b;
+    color: #94a3b8;
+    border: 1px solid #334155;
+  }
+  .result-def {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: #e2e8f0;
+  }
+  .result-related {
+    margin-top: 4px;
+    padding-top: 8px;
+    border-top: 1px solid var(--border-color, #1f293d);
+    font-size: 0.82rem;
+    color: #94a3b8;
+  }
+  .result-related strong {
+    color: #cbd5e1;
+  }
+</style>
 </head>
 <body>
 
