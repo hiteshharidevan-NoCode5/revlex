@@ -351,11 +351,19 @@
 
         const sqlite = new SQLiteConnection(CapacitorSQLite);
         await sqlite.copyFromAssets();
-        db = await sqlite.createConnection("revlex", false, "no-encryption", 1, false);
+        db = await sqlite.createConnection("revlex.db", false, "no-encryption", 1, false);
         await db.open();
         console.log("RevLex SQLite database connected successfully!");
       } catch (err) {
         console.error("Database initialization error:", err);
+const container = document.getElementById("resultsContainer");
+        if (container) {
+          container.innerHTML = `<div class="empty-state" style="color: #ff6b6b; font-family: monospace; text-align: left; padding: 12px; font-size: 13px;">
+            <strong>DB Init Error:</strong><br>${err.message || err}<br><br>
+            <strong>Capacitor:</strong> ${typeof window.Capacitor}<br>
+            <strong>Plugin:</strong> ${typeof window.CapacitorCommunitySqlite}
+          </div>`;
+        }
       }
     }
 
