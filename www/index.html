@@ -527,8 +527,9 @@
   }
 </style>
 
+
+
 <style id="revlex-theme-styles">
-  /* 1. Nordic Vibrant Teals */
   :root.theme-teals {
     --bg-color: #242b3d;
     --card-bg: #1b4b60;
@@ -539,14 +540,7 @@
     --pos-bg: #26b4cb;
     --pos-text: #ffffff;
     --btn-accent: #26b4cb;
-    --input-bg: #151e2e;
-    --input-border: #2f6b85;
-    --pill-bg: #1b4b60;
-    --pill-active-bg: #26b4cb;
-    --pill-active-text: #ffffff;
   }
-
-  /* 2. Nordic Maritime Blue */
   :root.theme-maritime {
     --bg-color: #242b3d;
     --card-bg: #1b4b60;
@@ -557,14 +551,7 @@
     --pos-bg: #1c8cd4;
     --pos-text: #ffffff;
     --btn-accent: #1c8cd4;
-    --input-bg: #151e2e;
-    --input-border: #2f6b85;
-    --pill-bg: #1b4b60;
-    --pill-active-bg: #1c8cd4;
-    --pill-active-text: #ffffff;
   }
-
-  /* 3. Peach & Warm Cream (Light) */
   :root.theme-peach {
     --bg-color: #fffaf5;
     --card-bg: #ffffff;
@@ -575,14 +562,7 @@
     --pos-bg: #ffedd5;
     --pos-text: #9a3412;
     --btn-accent: #ea580c;
-    --input-bg: #ffffff;
-    --input-border: #fed7aa;
-    --pill-bg: #ffedd5;
-    --pill-active-bg: #ea580c;
-    --pill-active-text: #ffffff;
   }
-
-  /* 4. Ballet Rose & White (Light) */
   :root.theme-rose {
     --bg-color: #fdf2f4;
     --card-bg: #ffffff;
@@ -593,14 +573,7 @@
     --pos-bg: #fce7f3;
     --pos-text: #9d174d;
     --btn-accent: #db2777;
-    --input-bg: #ffffff;
-    --input-border: #fbcfe8;
-    --pill-bg: #fce7f3;
-    --pill-active-bg: #db2777;
-    --pill-active-text: #ffffff;
   }
-
-  /* 5. Velvet Burgundy & Rose (Dark/Moody) */
   :root.theme-burgundy {
     --bg-color: #1e0a14;
     --card-bg: #2d1222;
@@ -611,60 +584,25 @@
     --pos-bg: #5b1e42;
     --pos-text: #fbcfe8;
     --btn-accent: #fb7185;
-    --input-bg: #15070e;
-    --input-border: #4a1d37;
-    --pill-bg: #2d1222;
-    --pill-active-bg: #fb7185;
-    --pill-active-text: #1e0a14;
   }
 
-  /* UI Bindings */
   body {
     background-color: var(--bg-color) !important;
     color: var(--text-primary) !important;
-    transition: background-color 0.25s ease, color 0.25s ease;
-  }
-  .search-container input, .search-box input {
-    background: var(--input-bg) !important;
-    color: var(--text-primary) !important;
-    border-color: var(--input-border) !important;
-  }
-  .filter-pill, .filter-chip, .filter-btn {
-    background: var(--pill-bg) !important;
-    color: var(--text-secondary) !important;
-    border: 1px solid var(--border-color) !important;
-  }
-  .filter-pill.active, .filter-chip.active, .filter-btn.active {
-    background: var(--pill-active-bg) !important;
-    color: var(--pill-active-text) !important;
-    border-color: var(--pill-active-bg) !important;
   }
   .result-card {
     background: var(--card-bg) !important;
     border: 1px solid var(--border-color) !important;
-    border-radius: 14px !important;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08) !important;
-    padding: 18px !important;
-    margin-bottom: 16px !important;
   }
   .result-word {
     color: var(--accent-word) !important;
-    font-size: 1.35rem !important;
-    font-weight: 700 !important;
   }
   .result-pos {
     background: var(--pos-bg) !important;
     color: var(--pos-text) !important;
-    border-radius: 999px !important;
-    padding: 2px 8px !important;
-    font-size: 0.72rem !important;
-    font-weight: 600 !important;
-    text-transform: uppercase !important;
   }
   .result-def {
     color: var(--text-primary) !important;
-    font-size: 0.95rem !important;
-    line-height: 1.5 !important;
   }
   .result-related {
     color: var(--text-secondary) !important;
@@ -672,32 +610,23 @@
   }
   .openlex-btn {
     color: var(--btn-accent) !important;
-    background: transparent !important;
     border: 1px solid var(--btn-accent) !important;
-    border-radius: 8px !important;
-    font-size: 0.8rem !important;
-    font-weight: 600 !important;
-  }
-  .openlex-link-row {
-    border-top: 1px dashed var(--border-color) !important;
   }
 
-  /* Pro Theme Selector Toolbar */
   .theme-bar {
     display: flex;
     align-items: center;
     gap: 6px;
+    padding: 8px 12px;
     overflow-x: auto;
-    padding: 6px 16px 12px;
-    scrollbar-width: none;
-    -webkit-overflow-scrolling: touch;
+    background: rgba(0,0,0,0.15);
+    border-radius: 8px;
+    margin: 8px 12px;
   }
-  .theme-bar::-webkit-scrollbar { display: none; }
   .theme-bar-label {
-    font-size: 0.7rem;
+    font-size: 0.72rem;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
     color: var(--text-secondary);
     margin-right: 4px;
     white-space: nowrap;
@@ -712,17 +641,24 @@
     color: var(--text-secondary);
     cursor: pointer;
     white-space: nowrap;
-    transition: all 0.2s ease;
   }
   .theme-chip.active {
     border-color: var(--accent-word);
     color: var(--accent-word);
-    box-shadow: 0 0 0 1px var(--accent-word);
   }
 </style>
-
 </head>
 <body>
+
+    <div class="theme-bar">
+      <span class="theme-bar-label">Palette:</span>
+      <button type="button" class="theme-chip" data-theme="teals" onclick="setPalette('teals')">Teal</button>
+      <button type="button" class="theme-chip" data-theme="maritime" onclick="setPalette('maritime')">Maritime</button>
+      <button type="button" class="theme-chip" data-theme="peach" onclick="setPalette('peach')">Peach</button>
+      <button type="button" class="theme-chip" data-theme="rose" onclick="setPalette('rose')">Rose</button>
+      <button type="button" class="theme-chip" data-theme="burgundy" onclick="setPalette('burgundy')">Burgundy</button>
+    </div>
+
 
   <main class="app-container">
     <header>
@@ -1019,30 +955,31 @@
     });
 </script>
 
+
+
 <script id="revlex-theme-engine">
   function setPalette(name) {
-    const validThemes = ["teals", "maritime", "peach", "rose", "burgundy"];
-    if (!validThemes.includes(name)) name = "teals";
-
-    validThemes.forEach(t => document.documentElement.classList.remove("theme-" + t));
+    var valid = ["teals", "maritime", "peach", "rose", "burgundy"];
+    if (valid.indexOf(name) === -1) name = "teals";
+    valid.forEach(function(t) {
+      document.documentElement.classList.remove("theme-" + t);
+    });
     document.documentElement.classList.add("theme-" + name);
-    localStorage.setItem("revlex_palette", name);
-
-    document.querySelectorAll(".theme-chip").forEach(chip => {
-      chip.classList.toggle("active", chip.getAttribute("data-theme") === name);
+    try { localStorage.setItem("revlex_palette", name); } catch(e){}
+    var chips = document.querySelectorAll(".theme-chip");
+    chips.forEach(function(c) {
+      if (c.getAttribute("data-theme") === name) {
+        c.classList.add("active");
+      } else {
+        c.classList.remove("active");
+      }
     });
   }
-
-  // Auto-detect system mode if first run, else load stored preference
-  document.addEventListener("DOMContentLoaded", () => {
-    let saved = localStorage.getItem("revlex_palette");
-    if (!saved) {
-      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-      saved = prefersDark ? "teals" : "peach";
-    }
+  document.addEventListener("DOMContentLoaded", function() {
+    var saved = "teals";
+    try { saved = localStorage.getItem("revlex_palette") || "teals"; } catch(e){}
     setPalette(saved);
   });
 </script>
-
 </body>
 </html>
