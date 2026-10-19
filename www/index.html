@@ -341,27 +341,51 @@
 
     let activePos = "all";
 
-    async function initDatabase() {
+        async function initDatabase() {
       try {
-        const { CapacitorSQLite, SQLiteConnection } = window.CapacitorCommunitySqlite || {};
-        if (!window.Capacitor || !window.Capacitor.isNativePlatform()) {
-          console.log("Web mode: SQLite requires native Android container");
-          return;
+        const { CapacitorSQLite } = window.Capacitor?.Plugins || {};
+        
+        if (!CapacitorSQLite) {
+          throw new Error("CapacitorSQLite plugin not found in window.Capacitor.Plugins");
         }
 
-        const sqlite = new SQLiteConnection(CapacitorSQLite);
-        await sqlite.copyFromAssets();
-        db = await sqlite.createConnection("revlex.db", false, "no-encryption", 1, false);
-        await db.open();
+        // 1. Copy bundled database from assets/databases/ to the app data directory
+        await CapacitorSQLite.copyFromAssets({ toVersionFolder: false });
+
+        // 2. Create and open connection directly via native plugin
+        await CapacitorSQLite.createConnection({
+          database: "revlex",
+          version: 1,
+          encrypted: false,
+          mode: "no-encryption"
+        });
+
+        await CapacitorSQLite.open({ database: "revlex" });
+
+        // Provide an active db wrapper for queries
+        db = {
+          query: async (statement, values = []) => {
+            return await CapacitorSQLite.query({
+              database: "revlex",
+              statement: statement,
+              values: values
+            });
+          }
+        };
+
         console.log("RevLex SQLite database connected successfully!");
+        const container = document.getElementById("resultsContainer");
+        if (container) {
+          container.innerHTML = "<div class=\"empty-state\">Database ready! Type a concept above to search.</div>";
+        }
       } catch (err) {
         console.error("Database initialization error:", err);
-const container = document.getElementById("resultsContainer");
+        const container = document.getElementById("resultsContainer");
         if (container) {
           container.innerHTML = `<div class="empty-state" style="color: #ff6b6b; font-family: monospace; text-align: left; padding: 12px; font-size: 13px;">
             <strong>DB Init Error:</strong><br>${err.message || err}<br><br>
             <strong>Capacitor:</strong> ${typeof window.Capacitor}<br>
-            <strong>Plugin:</strong> ${typeof window.CapacitorCommunitySqlite}
+            <strong>Available Plugins:</strong> ${window.Capacitor?.Plugins ? Object.keys(window.Capacitor.Plugins).join(", ") : "none"}
           </div>`;
         }
       }
