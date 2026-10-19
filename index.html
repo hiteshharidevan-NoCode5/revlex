@@ -538,19 +538,20 @@
 
 
 
-<style id="revlex-tiled-theme">
-  /* DARK THEME (Left mockup): Midnight Ink + Luminous Teal */
-  :root, html.dark-mode {
-    --bg-page: #0d1520;
-    --card-bg: #152434;
-    --card-border: #213a52;
-    --search-bg: #0f1a26;
+
+<style id="revlex-master-theme">
+  /* THEME 1: Midnight Teal (Default Dark) */
+  :root, html.theme-teal {
+    --bg-page: #0a1118;
+    --card-bg: #142533;
+    --card-border: #223f54;
+    --search-bg: #0f1c27;
     --search-border: #2dd4bf;
-    --search-glow: rgba(45, 212, 191, 0.45);
+    --search-glow: rgba(45, 212, 191, 0.35);
     --text-word: #ffffff;
     --text-body: #e2e8f0;
     --text-muted: #8ca3ba;
-    --pos-bg: #224343;
+    --pos-bg: #1c3d3d;
     --pos-text: #5eead4;
     --pos-border: #2dd4bf;
     --btn-border: #2dd4bf;
@@ -558,15 +559,34 @@
     --btn-bg: rgba(45, 212, 191, 0.08);
   }
 
-  /* LIGHT THEME (Right mockup): Frosted Mint + Deep Slate Typography */
-  html.light-mode {
-    --bg-page: #e8f5f3;
+  /* THEME 2: Monochrome Wireframe (High-Contrast B&W) */
+  html.theme-wireframe {
+    --bg-page: #08090a;
+    --card-bg: #101216;
+    --card-border: #e2e8f0;
+    --search-bg: #101216;
+    --search-border: #e2e8f0;
+    --search-glow: rgba(255, 255, 255, 0.08);
+    --text-word: #ffffff;
+    --text-body: #f8fafc;
+    --text-muted: #94a3b8;
+    --pos-bg: transparent;
+    --pos-text: #ffffff;
+    --pos-border: #e2e8f0;
+    --btn-border: #e2e8f0;
+    --btn-text: #ffffff;
+    --btn-bg: transparent;
+  }
+
+  /* THEME 3: Frosted Mint Light */
+  html.theme-light {
+    --bg-page: #edf8f6;
     --card-bg: #ffffff;
     --card-border: #bce4dc;
     --search-bg: #ffffff;
     --search-border: #0d9488;
-    --search-glow: rgba(13, 148, 136, 0.25);
-    --text-word: #042f2e;
+    --search-glow: rgba(13, 148, 136, 0.2);
+    --text-word: #064e4b;
     --text-body: #0f172a;
     --text-muted: #475569;
     --pos-bg: #ccfbf1;
@@ -575,26 +595,6 @@
     --btn-border: #0d9488;
     --btn-text: #0f766e;
     --btn-bg: rgba(13, 148, 136, 0.06);
-  }
-
-  @media (prefers-color-scheme: light) {
-    :root:not(.dark-mode) {
-      --bg-page: #e8f5f3;
-      --card-bg: #ffffff;
-      --card-border: #bce4dc;
-      --search-bg: #ffffff;
-      --search-border: #0d9488;
-      --search-glow: rgba(13, 148, 136, 0.25);
-      --text-word: #042f2e;
-      --text-body: #0f172a;
-      --text-muted: #475569;
-      --pos-bg: #ccfbf1;
-      --pos-text: #0f766e;
-      --pos-border: #0d9488;
-      --btn-border: #0d9488;
-      --btn-text: #0f766e;
-      --btn-bg: rgba(13, 148, 136, 0.06);
-    }
   }
 
   body {
@@ -611,27 +611,26 @@
   .search-container input, .search-box input, input[type="search"], input[type="text"] {
     background: var(--search-bg) !important;
     color: var(--text-word) !important;
-    border: 2px solid var(--search-border) !important;
-    border-radius: 14px !important;
-    box-shadow: 0 0 12px var(--search-glow) !important;
+    border: 1.5px solid var(--search-border) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 0 10px var(--search-glow) !important;
   }
 
-  /* Filter Buttons */
+  /* Filter Pills */
   .filter-pill, .filter-chip, .filter-btn, .filters button, .pos-filters button {
     background: var(--card-bg) !important;
     color: var(--text-muted) !important;
     border: 1px solid var(--card-border) !important;
     border-radius: 999px !important;
-    font-weight: 600 !important;
   }
-  .filter-pill.active, .filter-chip.active, .filter-btn.active, .filters button.active, .pos-filters button.active {
+  .filter-pill.active, .filter-chip.active, .filter-btn.active, .filters button.active {
     background: var(--btn-text) !important;
     color: #ffffff !important;
     border-color: var(--btn-text) !important;
   }
 
-  /* 2-COLUMN TILED RESULTS GRID */
-  #results, .results {
+  /* STRICT 2-COLUMN TILED RESULTS GRID */
+  #results, .results, div[id*="results"], div[class*="results"] {
     display: grid !important;
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
     gap: 12px !important;
@@ -644,18 +643,20 @@
   /* Tiled Card Design */
   .result-card {
     background: var(--card-bg) !important;
-    border: 1px solid var(--card-border) !important;
-    border-radius: 16px !important;
+    border: 1.5px solid var(--card-border) !important;
+    border-radius: 14px !important;
     padding: 14px !important;
     margin: 0 !important;
     display: flex !important;
     flex-direction: column !important;
     justify-content: space-between !important;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2) !important;
     box-sizing: border-box !important;
+    width: 100% !important;
   }
 
-  .card-top {
+  /* Card Header: Word + Pill */
+  .card-header, .card-top {
     display: flex !important;
     flex-direction: column !important;
     align-items: flex-start !important;
@@ -663,27 +664,28 @@
     margin-bottom: 8px !important;
   }
 
-  .card-top .word {
+  .card-header .word, .card-top .word {
     color: var(--text-word) !important;
     font-size: 1.15rem !important;
     font-weight: 800 !important;
     letter-spacing: -0.01em !important;
     word-break: break-word !important;
-    line-height: 1.25 !important;
+    line-height: 1.2 !important;
   }
 
-  .card-top .pos {
+  .card-header .pos, .card-top .pos {
     background: var(--pos-bg) !important;
     color: var(--pos-text) !important;
     border: 1px solid var(--pos-border) !important;
     border-radius: 999px !important;
     padding: 2px 7px !important;
     font-size: 0.65rem !important;
-    font-weight: 700 !important;
+    font-weight: 800 !important;
     text-transform: uppercase !important;
     letter-spacing: 0.04em !important;
   }
 
+  /* Definition */
   .result-card .definition {
     color: var(--text-body) !important;
     font-size: 0.86rem !important;
@@ -692,6 +694,7 @@
     flex-grow: 1 !important;
   }
 
+  /* Synonyms / Related */
   .result-card .synonyms {
     color: var(--text-muted) !important;
     font-size: 0.76rem !important;
@@ -701,10 +704,12 @@
     word-break: break-word !important;
   }
 
-  .result-card .synonyms .syn-label {
+  .result-card .synonyms .syn-label, .result-card .synonyms strong {
+    color: var(--text-body) !important;
     font-weight: 700 !important;
   }
 
+  /* OpenLex Button */
   .card-action {
     width: 100% !important;
   }
@@ -714,7 +719,7 @@
     border: 1.5px solid var(--btn-border) !important;
     background: var(--btn-bg) !important;
     border-radius: 999px !important;
-    padding: 6px 10px !important;
+    padding: 6px 8px !important;
     font-size: 0.74rem !important;
     font-weight: 700 !important;
     text-align: center !important;
@@ -1051,34 +1056,63 @@
 
 
 
-<script id="revlex-theme-engine">
-  function toggleTheme() {
-    var isLight = document.documentElement.classList.contains("light-mode");
-    if (isLight) {
-      document.documentElement.classList.remove("light-mode");
-      document.documentElement.classList.add("dark-mode");
-      localStorage.setItem("revlex_mode", "dark");
-    } else {
-      document.documentElement.classList.remove("dark-mode");
-      document.documentElement.classList.add("light-mode");
-      localStorage.setItem("revlex_mode", "light");
+
+<script id="revlex-master-engine">
+  var themes = ["theme-teal", "theme-wireframe", "theme-light"];
+
+  function updateThemeButtonLabel(current) {
+    var btn = document.querySelector("header button, .theme-btn, #themeBtn, button");
+    var labelMap = {
+      "theme-teal": "Teal",
+      "theme-wireframe": "Wireframe",
+      "theme-light": "Light"
+    };
+    var themeButtons = document.querySelectorAll("header button, .theme-btn, #themeBtn, button");
+    themeButtons.forEach(function(b) {
+      if (b.innerText.toLowerCase().includes("theme") || b.id === "themeBtn" || b.hasAttribute("data-theme-btn")) {
+        b.setAttribute("data-theme-btn", "true");
+        b.innerText = "Theme: " + (labelMap[current] || "Teal");
+      }
+    });
+  }
+
+  function cycleTheme() {
+    var current = "theme-teal";
+    for (var i = 0; i < themes.length; i++) {
+      if (document.documentElement.classList.contains(themes[i])) {
+        current = themes[i];
+        break;
+      }
     }
+    var nextIndex = (themes.indexOf(current) + 1) % themes.length;
+    var nextTheme = themes[nextIndex];
+
+    themes.forEach(function(t) { document.documentElement.classList.remove(t); });
+    document.documentElement.classList.add(nextTheme);
+    try { localStorage.setItem("revlex_theme_mode", nextTheme); } catch(e){}
+    updateThemeButtonLabel(nextTheme);
+  }
+
+  function lookupWord(w) {
+    if (!w) return;
+    var url = "https://hiteshharidevan-nocode5.github.io/openlex/?q=" + encodeURIComponent(w.toLowerCase().trim());
+    window.open(url, "_blank");
   }
 
   document.addEventListener("DOMContentLoaded", function() {
-    var saved = localStorage.getItem("revlex_mode");
-    if (saved === "light") {
-      document.documentElement.classList.add("light-mode");
-    } else if (saved === "dark") {
-      document.documentElement.classList.add("dark-mode");
-    }
+    var saved = "theme-teal";
+    try { saved = localStorage.getItem("revlex_theme_mode") || "theme-teal"; } catch(e){}
+    themes.forEach(function(t) { document.documentElement.classList.remove(t); });
+    document.documentElement.classList.add(saved);
+    updateThemeButtonLabel(saved);
 
     var btns = document.querySelectorAll("header button, .theme-btn, #themeBtn, button");
     btns.forEach(function(b) {
-      if (b.innerText.trim().toLowerCase() === "theme" || b.id === "themeBtn") {
+      if (b.innerText.toLowerCase().includes("theme") || b.id === "themeBtn" || b.hasAttribute("data-theme-btn")) {
+        b.setAttribute("data-theme-btn", "true");
         b.onclick = function(e) {
           e.preventDefault();
-          toggleTheme();
+          cycleTheme();
         };
       }
     });
