@@ -529,31 +529,37 @@
 
 
 
+
 <style id="revlex-theme-styles">
-  :root.theme-teals {
-    --bg-color: #242b3d;
-    --card-bg: #1b4b60;
-    --border-color: #2f6b85;
-    --text-primary: #edfcfb;
-    --text-secondary: #92b8d0;
-    --accent-word: #53dfd1;
-    --pos-bg: #26b4cb;
-    --pos-text: #ffffff;
+  /* Modern Midnight Ink & Neon Teal (Preferred mockup style) */
+  :root, :root.theme-teals {
+    --bg-color: #0c131c;           /* Deep Midnight Ink */
+    --card-bg: #14202d;           /* Polished Navy-Charcoal */
+    --border-color: #1f3347;       /* Refined structural edge */
+    --text-primary: #ffffff;       /* Pure crisp white */
+    --text-secondary: #8da4be;     /* Soft slate metadata */
+    --accent-word: #38ef7d;        /* Vivid luminous seafoam */
+    --pos-bg: rgba(56, 239, 125, 0.15);
+    --pos-text: #38ef7d;
     --btn-accent: #26b4cb;
+    --search-glow: rgba(38, 180, 203, 0.4);
   }
+
   :root.theme-maritime {
-    --bg-color: #242b3d;
-    --card-bg: #1b4b60;
-    --border-color: #2f6b85;
-    --text-primary: #edfcfb;
-    --text-secondary: #92b8d0;
-    --accent-word: #53dfd1;
-    --pos-bg: #1c8cd4;
-    --pos-text: #ffffff;
-    --btn-accent: #1c8cd4;
+    --bg-color: #09121d;
+    --card-bg: #122133;
+    --border-color: #1e3a5a;
+    --text-primary: #ffffff;
+    --text-secondary: #8fb1d6;
+    --accent-word: #38bdf8;
+    --pos-bg: rgba(56, 189, 248, 0.16);
+    --pos-text: #38bdf8;
+    --btn-accent: #38bdf8;
+    --search-glow: rgba(56, 189, 248, 0.35);
   }
+
   :root.theme-peach {
-    --bg-color: #fffaf5;
+    --bg-color: #fff9f5;
     --card-bg: #ffffff;
     --border-color: #fed7aa;
     --text-primary: #292524;
@@ -562,7 +568,9 @@
     --pos-bg: #ffedd5;
     --pos-text: #9a3412;
     --btn-accent: #ea580c;
+    --search-glow: rgba(234, 88, 12, 0.25);
   }
+
   :root.theme-rose {
     --bg-color: #fdf2f4;
     --card-bg: #ffffff;
@@ -573,91 +581,139 @@
     --pos-bg: #fce7f3;
     --pos-text: #9d174d;
     --btn-accent: #db2777;
-  }
-  :root.theme-burgundy {
-    --bg-color: #1e0a14;
-    --card-bg: #2d1222;
-    --border-color: #4a1d37;
-    --text-primary: #fae8f0;
-    --text-secondary: #be95aa;
-    --accent-word: #f472b6;
-    --pos-bg: #5b1e42;
-    --pos-text: #fbcfe8;
-    --btn-accent: #fb7185;
+    --search-glow: rgba(219, 39, 119, 0.25);
   }
 
+  :root.theme-burgundy {
+    --bg-color: #160810;
+    --card-bg: #250f1c;
+    --border-color: #451b34;
+    --text-primary: #fae8f0;
+    --text-secondary: #b893a7;
+    --accent-word: #f472b6;
+    --pos-bg: #4c1a37;
+    --pos-text: #fbcfe8;
+    --btn-accent: #fb7185;
+    --search-glow: rgba(244, 114, 182, 0.3);
+  }
+
+  /* Full-bleed responsive layout */
   body {
     background-color: var(--bg-color) !important;
     color: var(--text-primary) !important;
+    margin: 0;
+    padding: 0;
+    transition: background-color 0.25s ease, color 0.25s ease;
   }
+  
+  #results, .results {
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
   .result-card {
     background: var(--card-bg) !important;
     border: 1px solid var(--border-color) !important;
+    border-radius: 14px !important;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25) !important;
+    margin-bottom: 14px !important;
+    padding: 16px 18px !important;
   }
+
   .result-word {
     color: var(--accent-word) !important;
+    font-size: 1.35rem !important;
+    font-weight: 700 !important;
   }
+
   .result-pos {
     background: var(--pos-bg) !important;
     color: var(--pos-text) !important;
+    border-radius: 999px !important;
+    padding: 3px 9px !important;
+    font-size: 0.72rem !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
   }
+
   .result-def {
     color: var(--text-primary) !important;
+    font-size: 0.95rem !important;
+    line-height: 1.5 !important;
   }
+
   .result-related {
     color: var(--text-secondary) !important;
     border-top: 1px dashed var(--border-color) !important;
   }
+
   .openlex-btn {
     color: var(--btn-accent) !important;
     border: 1px solid var(--btn-accent) !important;
+    background: transparent !important;
+    border-radius: 8px !important;
+    padding: 4px 10px !important;
+    font-weight: 600 !important;
   }
 
-  .theme-bar {
+  /* Modal Sheet for Palette Selection */
+  .palette-modal-backdrop {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(4px);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .palette-modal-backdrop.open {
+    display: flex;
+  }
+  .palette-modal {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 18px;
+    padding: 20px;
+    width: 100%;
+    max-width: 340px;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.4);
+  }
+  .palette-modal h3 {
+    margin: 0 0 14px 0;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+  .palette-options {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .palette-option-btn {
     display: flex;
     align-items: center;
-    gap: 6px;
-    padding: 8px 12px;
-    overflow-x: auto;
-    background: rgba(0,0,0,0.15);
-    border-radius: 8px;
-    margin: 8px 12px;
-  }
-  .theme-bar-label {
-    font-size: 0.72rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    color: var(--text-secondary);
-    margin-right: 4px;
-    white-space: nowrap;
-  }
-  .theme-chip {
-    font-size: 0.75rem;
-    font-weight: 600;
-    padding: 4px 10px;
-    border-radius: 999px;
+    justify-content: space-between;
+    padding: 10px 14px;
+    border-radius: 10px;
     border: 1px solid var(--border-color);
-    background: var(--card-bg);
-    color: var(--text-secondary);
+    background: rgba(255,255,255,0.03);
+    color: var(--text-primary);
+    font-size: 0.88rem;
+    font-weight: 600;
     cursor: pointer;
-    white-space: nowrap;
   }
-  .theme-chip.active {
+  .palette-option-btn.active {
     border-color: var(--accent-word);
+    background: rgba(56, 239, 125, 0.08);
     color: var(--accent-word);
   }
 </style>
 </head>
 <body>
 
-    <div class="theme-bar">
-      <span class="theme-bar-label">Palette:</span>
-      <button type="button" class="theme-chip" data-theme="teals" onclick="setPalette('teals')">Teal</button>
-      <button type="button" class="theme-chip" data-theme="maritime" onclick="setPalette('maritime')">Maritime</button>
-      <button type="button" class="theme-chip" data-theme="peach" onclick="setPalette('peach')">Peach</button>
-      <button type="button" class="theme-chip" data-theme="rose" onclick="setPalette('rose')">Rose</button>
-      <button type="button" class="theme-chip" data-theme="burgundy" onclick="setPalette('burgundy')">Burgundy</button>
-    </div>
+    
 
 
   <main class="app-container">
@@ -957,8 +1013,45 @@
 
 
 
+
+
+<div id="paletteModal" class="palette-modal-backdrop" onclick="if(event.target === this) togglePaletteModal()">
+  <div class="palette-modal">
+    <h3>Choose Palette</h3>
+    <div class="palette-options">
+      <button type="button" class="palette-option-btn" data-theme="teals" onclick="selectPalette('teals')">
+        <span>Vibrant Teal (Midnight)</span>
+        <span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#38ef7d"></span>
+      </button>
+      <button type="button" class="palette-option-btn" data-theme="maritime" onclick="selectPalette('maritime')">
+        <span>Maritime Blue</span>
+        <span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#38bdf8"></span>
+      </button>
+      <button type="button" class="palette-option-btn" data-theme="peach" onclick="selectPalette('peach')">
+        <span>Peach Blossom</span>
+        <span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#ea580c"></span>
+      </button>
+      <button type="button" class="palette-option-btn" data-theme="rose" onclick="selectPalette('rose')">
+        <span>Ballet Rose</span>
+        <span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#db2777"></span>
+      </button>
+      <button type="button" class="palette-option-btn" data-theme="burgundy" onclick="selectPalette('burgundy')">
+        <span>Velvet Burgundy</span>
+        <span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#f472b6"></span>
+      </button>
+    </div>
+  </div>
+</div>
+
 <script id="revlex-theme-engine">
-  function setPalette(name) {
+  function togglePaletteModal() {
+    var modal = document.getElementById("paletteModal");
+    if (modal) {
+      modal.classList.toggle("open");
+    }
+  }
+
+  function selectPalette(name) {
     var valid = ["teals", "maritime", "peach", "rose", "burgundy"];
     if (valid.indexOf(name) === -1) name = "teals";
     valid.forEach(function(t) {
@@ -966,19 +1059,30 @@
     });
     document.documentElement.classList.add("theme-" + name);
     try { localStorage.setItem("revlex_palette", name); } catch(e){}
-    var chips = document.querySelectorAll(".theme-chip");
-    chips.forEach(function(c) {
-      if (c.getAttribute("data-theme") === name) {
-        c.classList.add("active");
-      } else {
-        c.classList.remove("active");
-      }
+
+    document.querySelectorAll(".palette-option-btn").forEach(function(btn) {
+      btn.classList.toggle("active", btn.getAttribute("data-theme") === name);
     });
+
+    // Auto-close modal after selection
+    togglePaletteModal();
   }
+
   document.addEventListener("DOMContentLoaded", function() {
     var saved = "teals";
     try { saved = localStorage.getItem("revlex_palette") || "teals"; } catch(e){}
-    setPalette(saved);
+    selectPalette(saved);
+
+    // Bind existing top-right Theme button
+    var themeButtons = document.querySelectorAll("header button, .theme-btn, #themeBtn");
+    themeButtons.forEach(function(btn) {
+      if (btn.innerText.toLowerCase().includes("theme") || btn.id === "themeBtn") {
+        btn.onclick = function(e) {
+          e.preventDefault();
+          togglePaletteModal();
+        };
+      }
+    });
   });
 </script>
 </body>
