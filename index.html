@@ -921,7 +921,7 @@
             <div class="definition">${item.definition}</div>
             ${item.synonyms ? `<div class="synonyms"><span class="syn-label">Related:</span> ${item.synonyms}</div>` : ""}
             <div class="card-action">
-              <button type="button" class="openlex-btn" onclick="lookupWord('${item.word}')">Look up in OpenLex ↗</button>
+              <button type="button" class="openlex-btn" onclick="lookupWord('${item.word.replace(/'/g, "\'")}', '${(item.pos || "").replace(/'/g, "\'")}', '${(item.definition || "").slice(0, 120).replace(/'/g, "\'")}')">Look up in OpenLex ↗</button>
             </div>
           </div>
         `).join("");
@@ -973,11 +973,16 @@
       initDatabase();
     });
   
-    function lookupWord(w) {
-      if (!w) return;
-      var url = "https://hiteshharidevan-nocode5.github.io/openlex/?q=" + encodeURIComponent(w.toLowerCase().trim());
-      window.open(url, "_blank");
-    }
+      function lookupWord(w, pos, def) {
+    if (!w) return;
+    var params = new URLSearchParams();
+    params.set("q", w.trim().toLowerCase());
+    if (pos) params.set("pos", pos.trim().toLowerCase());
+    if (def) params.set("context", def.trim());
+
+    var url = "https://hiteshharidevan-nocode5.github.io/openlex/?" + params.toString();
+    window.open(url, "_blank");
+  }
     
 </script>
 <script>
@@ -1056,9 +1061,14 @@
     updateThemeButtonLabel(nextTheme);
   }
 
-  function lookupWord(w) {
+    function lookupWord(w, pos, def) {
     if (!w) return;
-    var url = "https://hiteshharidevan-nocode5.github.io/openlex/?q=" + encodeURIComponent(w.toLowerCase().trim());
+    var params = new URLSearchParams();
+    params.set("q", w.trim().toLowerCase());
+    if (pos) params.set("pos", pos.trim().toLowerCase());
+    if (def) params.set("context", def.trim());
+
+    var url = "https://hiteshharidevan-nocode5.github.io/openlex/?" + params.toString();
     window.open(url, "_blank");
   }
 
