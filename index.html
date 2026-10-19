@@ -533,155 +533,102 @@
 
 
 
-<style id="revlex-tiled-theme">
-  /* DARK THEME: Midnight Ink with Neon Teal Highlights */
-  :root, html.dark-mode {
-    --bg-page: #0b131d;
-    --card-bg: #132230;
-    --card-border: #1d354b;
-    --search-bg: #0f1a26;
-    --search-border: #2dd4bf;
-    --search-glow: rgba(45, 212, 191, 0.35);
-    --text-word: #3df2c4;        /* Luminous seafoam teal (high luminance) */
-    --text-body: #ffffff;        /* 100% white for definitions */
-    --text-muted: #8eaec7;       /* Clear secondary contrast */
-    --pos-bg: #1d4040;
-    --pos-text: #a7f3d0;
-    --pos-border: #34d399;
-    --btn-border: #22d3ee;
-    --btn-text: #22d3ee;
-    --btn-bg: rgba(34, 211, 238, 0.08);
-  }
 
-  /* LIGHT THEME: Frosted Mint with Deep Spruce Teal Typography */
-  html.light-mode {
-    --bg-page: #edf8f6;
-    --card-bg: #ffffff;
-    --card-border: #bce3dc;
-    --search-bg: #f8fdfc;
-    --search-border: #14b8a6;
-    --search-glow: rgba(20, 184, 166, 0.25);
-    --text-word: #065f64;        /* Deep spruce teal (bold and legible) */
-    --text-body: #0a1922;        /* Dark carbon for readability */
-    --text-muted: #4b6b77;       /* Subdued secondary text */
-    --pos-bg: #ccfbf1;
-    --pos-text: #0f766e;
-    --pos-border: #14b8a6;
-    --btn-border: #0d9488;
-    --btn-text: #0f766e;
-    --btn-bg: rgba(13, 148, 136, 0.08);
-  }
 
-  /* Respect OS setting if user has not tapped manual toggle */
-  @media (prefers-color-scheme: light) {
-    :root:not(.dark-mode) {
-      --bg-page: #edf8f6;
-      --card-bg: #ffffff;
-      --card-border: #bce3dc;
-      --search-bg: #f8fdfc;
-      --search-border: #14b8a6;
-      --search-glow: rgba(20, 184, 166, 0.25);
-      --text-word: #065f64;
-      --text-body: #0a1922;
-      --text-muted: #4b6b77;
-      --pos-bg: #ccfbf1;
-      --pos-text: #0f766e;
-      --pos-border: #14b8a6;
-      --btn-border: #0d9488;
-      --btn-text: #0f766e;
-      --btn-bg: rgba(13, 148, 136, 0.08);
-    }
+<style id="revlex-monochrome-theme">
+  :root, body {
+    --bg-page: #0a0c0e;
+    --card-bg: #111418;
+    --card-border: #2a313a;
+    --search-bg: #111418;
+    --search-border: #3b4452;
+    --search-glow: rgba(255, 255, 255, 0.05);
+    --text-word: #ffffff;
+    --text-body: #e1e7ed;
+    --text-muted: #8a96a3;
+    --pos-bg: #1c222a;
+    --pos-text: #ffffff;
+    --pos-border: #4d596a;
+    --btn-border: #4d596a;
+    --btn-text: #ffffff;
+    --btn-bg: transparent;
   }
-
-  /* Core Layout */
   body {
     background-color: var(--bg-page) !important;
     color: var(--text-body) !important;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    margin: 0;
-    padding: 0;
-    -webkit-font-smoothing: antialiased;
-    transition: background-color 0.2s ease;
+    margin: 0; padding: 0;
   }
-
-  /* Glow Search Container from Mockup */
   .search-container input, .search-box input {
     background: var(--search-bg) !important;
-    color: var(--text-body) !important;
-    border: 2px solid var(--search-border) !important;
+    color: var(--text-word) !important;
+    border: 1.5px solid var(--search-border) !important;
     border-radius: 12px !important;
-    box-shadow: 0 0 14px var(--search-glow) !important;
   }
-
-  /* 2-COLUMN TILED GRID */
+  .filter-pill, .filter-chip, .filter-btn {
+    background: #111418 !important;
+    color: #8a96a3 !important;
+    border: 1px solid #2a313a !important;
+    border-radius: 999px !important;
+  }
+  .filter-pill.active, .filter-chip.active, .filter-btn.active {
+    background: #1c222a !important;
+    color: #ffffff !important;
+    border-color: #ffffff !important;
+  }
   #results, .results {
-    display: grid !important;
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    display: flex !important;
+    flex-direction: column !important;
     gap: 12px !important;
-    padding: 12px !important;
+    padding: 12px 16px !important;
     box-sizing: border-box !important;
     width: 100% !important;
   }
-
-  /* Tiled Card Appearance */
   .result-card {
     background: var(--card-bg) !important;
-    border: 1px solid var(--card-border) !important;
+    border: 1.5px solid var(--card-border) !important;
     border-radius: 14px !important;
-    padding: 14px !important;
+    padding: 16px 18px !important;
     margin: 0 !important;
     display: flex !important;
     flex-direction: column !important;
-    justify-content: space-between !important;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
   }
-
   .result-word {
     color: var(--text-word) !important;
-    font-size: 1.15rem !important;
+    font-size: 1.25rem !important;
     font-weight: 800 !important;
-    letter-spacing: -0.01em !important;
-    word-break: break-word !important;
   }
-
   .result-pos {
     background: var(--pos-bg) !important;
     color: var(--pos-text) !important;
     border: 1px solid var(--pos-border) !important;
     border-radius: 999px !important;
-    padding: 2px 7px !important;
-    font-size: 0.68rem !important;
+    padding: 2px 8px !important;
+    font-size: 0.7rem !important;
     font-weight: 700 !important;
     text-transform: uppercase !important;
-    align-self: flex-start !important;
-    margin-top: 4px !important;
   }
-
   .result-def {
     color: var(--text-body) !important;
-    font-size: 0.88rem !important;
-    line-height: 1.45 !important;
-    margin: 10px 0 !important;
-    flex-grow: 1 !important;
+    font-size: 0.92rem !important;
+    line-height: 1.5 !important;
+    margin: 8px 0 12px !important;
   }
-
   .result-related {
     color: var(--text-muted) !important;
-    font-size: 0.78rem !important;
-    border-top: 1px dashed var(--card-border) !important;
-    padding-top: 8px !important;
-    margin-bottom: 10px !important;
-    word-break: break-word !important;
+    font-size: 0.8rem !important;
+    border-top: 1px solid var(--card-border) !important;
+    padding-top: 10px !important;
+    margin-bottom: 12px !important;
   }
-
   .openlex-btn {
     color: var(--btn-text) !important;
     border: 1px solid var(--btn-border) !important;
-    background: var(--btn-bg) !important;
-    border-radius: 8px !important;
-    padding: 6px 8px !important;
-    font-size: 0.75rem !important;
-    font-weight: 700 !important;
+    background: transparent !important;
+    border-radius: 20px !important;
+    padding: 7px 14px !important;
+    font-size: 0.8rem !important;
+    font-weight: 600 !important;
     text-align: center !important;
     text-decoration: none !important;
     display: block !important;
@@ -689,6 +636,7 @@
     box-sizing: border-box !important;
   }
 </style>
+
 </head>
 <body>
 
@@ -1000,38 +948,6 @@
 
 
 
-<script id="revlex-tiled-engine">
-  function toggleTheme() {
-    var isLight = document.documentElement.classList.contains("light-mode");
-    if (isLight) {
-      document.documentElement.classList.remove("light-mode");
-      document.documentElement.classList.add("dark-mode");
-      localStorage.setItem("revlex_mode", "dark");
-    } else {
-      document.documentElement.classList.remove("dark-mode");
-      document.documentElement.classList.add("light-mode");
-      localStorage.setItem("revlex_mode", "light");
-    }
-  }
 
-  document.addEventListener("DOMContentLoaded", function() {
-    var saved = localStorage.getItem("revlex_mode");
-    if (saved === "light") {
-      document.documentElement.classList.add("light-mode");
-    } else if (saved === "dark") {
-      document.documentElement.classList.add("dark-mode");
-    }
-
-    var btns = document.querySelectorAll("header button, .theme-btn, #themeBtn, button");
-    btns.forEach(function(b) {
-      if (b.innerText.trim().toLowerCase() === "theme" || b.id === "themeBtn") {
-        b.onclick = function(e) {
-          e.preventDefault();
-          toggleTheme();
-        };
-      }
-    });
-  });
-</script>
 </body>
 </html>
