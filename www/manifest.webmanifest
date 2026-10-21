@@ -1,11 +1,11 @@
 {
   "name": "RevLex — Reverse Dictionary",
   "short_name": "RevLex",
-  "description": "Reverse dictionary and conceptual search powered by FTS5",
+  "description": "Offline concept and reverse dictionary search",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#0f172a",
-  "theme_color": "#2196f3",
+  "background_color": "#09121a",
+  "theme_color": "#2dd4bf",
   "icons": [
     {
       "src": "assets/icon/icon-192.png",
