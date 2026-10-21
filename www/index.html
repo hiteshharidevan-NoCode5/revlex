@@ -697,6 +697,16 @@
     filter: brightness(1.3) !important;
   }
 </style>
+
+  <link rel="manifest" href="manifest.webmanifest">
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("./sw.js").catch(console.error);
+      });
+    }
+  </script>
+<script src="js/sqlite3.js"></script>
 </head>
 <body>
 
@@ -796,54 +806,34 @@
     }
 
     async function initDatabase() {
-      try {
-        const { CapacitorSQLite } = window.Capacitor?.Plugins || {};
-        
-        if (!CapacitorSQLite) {
-          throw new Error("CapacitorSQLite plugin not found in window.Capacitor.Plugins");
-        }
-
-        // 1. Copy bundled database from assets/databases/ to the app data directory
-        await CapacitorSQLite.copyFromAssets({ toVersionFolder: false });
-
-        // 2. Create and open connection directly via native plugin
-        await CapacitorSQLite.createConnection({
-          database: "revlex",
-          version: 1,
-          encrypted: false,
-          mode: "no-encryption"
-        });
-
-        await CapacitorSQLite.open({ database: "revlex" });
-
-        // Provide an active db wrapper for queries
-        db = {
-          query: async (statement, values = []) => {
-            return await CapacitorSQLite.query({
-              database: "revlex",
-              statement: statement,
-              values: values
-            });
-          }
-        };
-
-        console.log("RevLex SQLite database connected successfully!");
-        const container = document.getElementById("resultsContainer");
-        if (container) {
-          container.innerHTML = "<div class=\"empty-state\">Database ready! Type a concept above to search.</div>";
-        }
-      } catch (err) {
-        console.error("Database initialization error:", err);
-        const container = document.getElementById("resultsContainer");
-        if (container) {
-          container.innerHTML = `<div class="empty-state" style="color: #ff6b6b; font-family: monospace; text-align: left; padding: 12px; font-size: 13px;">
-            <strong>DB Init Error:</strong><br>${err.message || err}<br><br>
-            <strong>Capacitor:</strong> ${typeof window.Capacitor}<br>
-            <strong>Available Plugins:</strong> ${window.Capacitor?.Plugins ? Object.keys(window.Capacitor.Plugins).join(", ") : "none"}
-          </div>`;
-        }
-      }
+  const container = document.getElementById("resultsContainer");
+  try {
+    const { CapacitorSQLite } = window.Capacitor?.Plugins || {};
+    if (CapacitorSQLite) {
+      await CapacitorSQLite.copyFromAssets({ toVersionFolder: false });
+      await CapacitorSQLite.createConnection({ database: "revlex", version: 1, encrypted: false, mode: "no-encryption" });
+      await CapacitorSQLite.open({ database: "revlex" });
+      db = { query: async (s, v = []) => await CapacitorSQLite.query({ database: "revlex", statement: s, values: v }) };
+      console.log("RevLex native SQLite connected!");
+    } else {
+      if (container) container.innerHTML = '<div class="empty-state">Loading offline database (292k entries)... Please wait.</div>';
+      console.log("Initializing SQLite3 WASM with FTS5...");
+      const sqlite3 = await sqlite3InitModule();
+      console.log("Fetching database for WASM...");
+      const res = await fetch("assets/databases/revlex.db");
+      const buf = await res.arrayBuffer();
+      const wasmDb = new sqlite3.oo1.DB();
+      const p = sqlite3.wasm.allocFromTypedArray(new Uint8Array(buf));
+      sqlite3.capi.sqlite3_deserialize(wasmDb.pointer, "main", p, buf.byteLength, buf.byteLength, sqlite3.capi.SQLITE_DESERIALIZE_FREEONCLOSE);
+      db = { query: async (s, v = []) => { const rows = []; wasmDb.exec({ sql: s, bind: v, rowMode: "object", resultRows: rows }); return { values: rows }; } };
+      console.log("RevLex SQLite WASM FTS5 ready!");
     }
+    if (container) container.innerHTML = '<div class="empty-state">Database ready! Type a concept above to search.</div>';
+  } catch (err) {
+    console.error("DB Init Error:", err);
+    if (container) container.innerHTML = `<div class="empty-state" style="color:#ff6b6b;font-family:monospace;text-align:left;padding:12px;font-size:13px;"><strong>DB Init Error:</strong><br>${err.message || err}</div>`;
+  }
+}
 
     function tokenize(text) {
       return text
