@@ -2,32 +2,32 @@
   "name": "RevLex — Reverse Dictionary",
   "short_name": "RevLex",
   "description": "Offline concept and reverse dictionary search",
-  "start_url": "./index.html",
-  "scope": "./",
+  "start_url": "/revlex/",
+  "scope": "/revlex/",
   "display": "standalone",
   "background_color": "#09121a",
   "theme_color": "#2dd4bf",
   "icons": [
     {
-      "src": "assets/icon/icon-192.png",
+      "src": "/revlex/assets/icon/icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "assets/icon/icon-192.png",
+      "src": "/revlex/assets/icon/icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "maskable"
     },
     {
-      "src": "assets/icon/icon-512.png",
+      "src": "/revlex/assets/icon/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "assets/icon/icon-512.png",
+      "src": "/revlex/assets/icon/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
